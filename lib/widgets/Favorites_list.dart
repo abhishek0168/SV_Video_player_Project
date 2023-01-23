@@ -34,35 +34,31 @@ class _FavoritesListState extends State<FavoritesList> {
   @override
   void initState() {
     super.initState();
-    getThumbnail();
+    // getThumbnail();
   }
 
-  
 
-  List<String> thumbFile = [];
+  // void getThumbnail() async {
+  //   for (var index in demoVideo) {
+  //     final byteData = await rootBundle.load(index);
+  //     Directory tempDir = await getTemporaryDirectory();
 
-  void getThumbnail() async {
-    for (var index in demoVideo) {
-      final byteData = await rootBundle.load(index);
-      Directory tempDir = await getTemporaryDirectory();
+  //     File tempVideo = File("${tempDir.path}/$index")
+  //       ..createSync(recursive: true)
+  //       ..writeAsBytesSync(byteData.buffer
+  //           .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
 
-      File tempVideo = File("${tempDir.path}/$index")
-        ..createSync(recursive: true)
-        ..writeAsBytesSync(byteData.buffer
-            .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+  //     final fileName = await VideoThumbnail.thumbnailFile(
+  //       video: tempVideo.path,
+  //       thumbnailPath: (await getTemporaryDirectory()).path,
+  //       imageFormat: ImageFormat.JPEG,
+  //       quality: 100,
+  //     );
+  //     setState(() {});
+  //     thumbFile.add(fileName.toString());
+  //   }
 
-      final fileName = await VideoThumbnail.thumbnailFile(
-        video: tempVideo.path,
-        thumbnailPath: (await getTemporaryDirectory()).path,
-        imageFormat: ImageFormat.JPEG,
-        quality: 100,
-      );
-      setState(() {});
-      thumbFile.add(fileName.toString());
-    }
-
-    log(thumbFile.length.toString());
-  }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -80,12 +76,12 @@ class _FavoritesListState extends State<FavoritesList> {
         },
         child: VideoPreview(
           fileName: demoName[index],
-          thumbnailURL: thumbFile[index],
+          // thumbnailURL: thumbFile[index],
         ),
         // child: Image.file(File(thumbFile.toString())),
       ),
       separatorBuilder: (context, index) => const SizedBox(width: 20),
-      itemCount: thumbFile.length,
+      itemCount: demoVideo.length,
     );
   }
 }
