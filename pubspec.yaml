@@ -76,6 +76,11 @@ flutter:
         - asset: assets/fonts/Inter-Bold.ttf
           weight: 500
         - asset: assets/fonts/Inter-Medium.ttf
+
+    - family: CustomeAppIcon
+      fonts:
+        - asset: assets/icons/CustomeAppIcon.ttf
+      
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

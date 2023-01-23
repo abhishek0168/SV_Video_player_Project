@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:sv_video_app/icons/Folder_icon.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
 
 class PrimaryHeading extends StatelessWidget {
@@ -89,14 +90,11 @@ class VideoPreview extends StatelessWidget {
                     ],
                   )
                 : const Center(
-                    child: SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        color: AppColor.secondaryColor,
-                      ),
-                    ),
-                  ),
+                    child: Icon(
+                    CustomeAppIcon.video_1,
+                    size: 40,
+                    color: AppColor.secondaryColor,
+                  )),
           ),
         ),
         VideoName(
@@ -125,7 +123,7 @@ class FolderIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Icon(
-      Icons.folder,
+      CustomeAppIcon.folder,
       color: AppColor.primaryColor,
       size: iconSize,
     );
@@ -134,4 +132,10 @@ class FolderIcon extends StatelessWidget {
 
 class CustomeSizes {
   static const double folderLarge = 120;
+  static const double folderMideum = 70;
+}
+
+class CustomeTextStyle {
+  static const TextStyle fileNameWhite = TextStyle(
+      color: AppColor.textColor, fontSize: 18, fontWeight: FontWeight.bold);
 }
