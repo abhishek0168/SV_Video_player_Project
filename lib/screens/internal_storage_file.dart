@@ -15,15 +15,26 @@ class InternalStorageFile extends StatelessWidget {
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         itemBuilder: (context, index) {
-          return const ListTile(
-            leading: FolderIcon(iconSize: CustomeSizes.folderMideum),
-            title: Text(
-              'Folder Name',
-              style: CustomeTextStyle.fileNameWhite,
-            ),
-            trailing: Icon(
-              Icons.more_vert,
-              color: AppColor.whiteColor,
+          return InkWell(
+            onTap: () {},
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Expanded(
+                  child: FolderIcon(iconSize: CustomeSizes.folderMideum),
+                ),
+                Expanded(
+                    flex: 4,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: VideoName(
+                        input: "Name of the folderName",
+                        textAlign: TextAlign.left,
+                        width: 250,
+                      ),
+                    )),
+              ],
             ),
           );
         },

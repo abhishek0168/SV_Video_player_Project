@@ -86,7 +86,7 @@ class VideoPreview extends StatelessWidget {
                       ),
                       // Positioned(
                       //   child: Text('00:00'),
-                      // )
+                      // ) 
                     ],
                   )
                 : const Center(

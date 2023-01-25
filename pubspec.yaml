@@ -33,6 +33,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
   image_picker: ^0.8.6
   path: ^1.8.2
   path_provider: ^2.0.11
@@ -80,7 +82,6 @@ flutter:
     - family: CustomeAppIcon
       fonts:
         - asset: assets/icons/CustomeAppIcon.ttf
-      
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
