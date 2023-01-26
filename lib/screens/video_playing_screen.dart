@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
@@ -60,7 +62,8 @@ class _VideoplayerState extends State<Videoplayer> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Video(
-        videoPlayerController: VideoPlayerController.asset(widget.videoData),
+        videoPlayerController:
+            VideoPlayerController.file(File(widget.videoData)),
         loop: true,
         autoplay: true,
         aspectRatio: 16 / 9,

@@ -31,6 +31,7 @@ environment:
 dependencies:
   chewie: ^1.3.6
   cupertino_icons: ^1.0.2
+  fetch_all_videos: ^1.0.5
   flutter:
     sdk: flutter
   hive: ^2.2.3

@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sv_video_app/screens/video_playing_screen.dart';
 import 'package:sv_video_app/themes/custome_widgets.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class FavoritesList extends StatefulWidget {
   const FavoritesList({super.key});
@@ -61,11 +66,11 @@ class _FavoritesListState extends State<FavoritesList> {
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) => InkWell(
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Videoplayer(videoData: demoVideo[index]),
-              ));
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => Videoplayer(videoData: demoVideo[index]),
+          //     ));
         },
         child: VideoPreview(
           fileName: demoName[index],
