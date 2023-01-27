@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:sv_video_app/db/functions/db_function.dart';
+import 'package:sv_video_app/db/model/data_model.dart';
 
 import 'package:sv_video_app/screens/main_page.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
@@ -7,7 +9,11 @@ import 'package:sv_video_app/themes/app_colors.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await Hive.openBox('video_storage');
+  VideoDatabaseFunction().getAllVideos();
+  if (!Hive.isAdapterRegistered(VideoModelAdapter().typeId)) {
+    Hive.registerAdapter(VideoModelAdapter());
+  }
+
   runApp(const MyApp());
 }
 
