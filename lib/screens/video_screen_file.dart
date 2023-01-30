@@ -19,9 +19,6 @@ class VideoScreen extends StatefulWidget {
 class _VideoScreenState extends State<VideoScreen> {
   @override
   // ignore: must_call_super
-  initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,19 +33,22 @@ class _VideoScreenState extends State<VideoScreen> {
             crossAxisSpacing: 30,
           ),
           itemBuilder: (context, index) {
-            final data = videoDetails[index];
             return InkWell(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
                     return Videoplayer(
-                      videoData: data.videoUrl,
+                      videoData: videoDetails,
+                      index: index,
+                      
                     );
                   },
                 ));
               },
               child: VideoPreview(
-                fileName: data.videoName,
+                fileName: videoDetails[index].videoName,
+                fileDuration: videoDetails[index].videoDuration,
+                // thumbnailURL: videoDetails[index].videoUrl,
               ),
             );
           },

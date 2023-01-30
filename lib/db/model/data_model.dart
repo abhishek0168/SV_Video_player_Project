@@ -17,7 +17,8 @@ class VideoModel {
   final String videoDuration;
 
   VideoModel(
-      {required this.videoUrl,
+      {this.id,
+      required this.videoUrl,
       required this.videoName,
       required this.videoDuration});
 }

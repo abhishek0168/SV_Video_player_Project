@@ -31,6 +31,7 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         backgroundColor: AppColor.bgColor,
         title: Image.asset('assets/images/logo-full.png', width: 140),
+        elevation: 0,
       ),
       body: screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(

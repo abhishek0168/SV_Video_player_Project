@@ -60,9 +60,14 @@ class VideoName extends StatelessWidget {
 }
 
 class VideoPreview extends StatelessWidget {
-  const VideoPreview({super.key, required this.fileName, this.thumbnailURL});
+  const VideoPreview(
+      {super.key,
+      required this.fileName,
+      this.thumbnailURL,
+      this.fileDuration});
   final String fileName;
   final String? thumbnailURL;
+  final String? fileDuration;
 
   @override
   Widget build(BuildContext context) {
@@ -71,31 +76,65 @@ class VideoPreview extends StatelessWidget {
         ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(10)),
           child: Container(
-            width: 150,
-            height: 100,
-            color: AppColor.primaryColor,
-            // child: thumbnailURL,
-            child: thumbnailURL != null
-                ? Stack(
-                    alignment: AlignmentDirectional.center,
-                    fit: StackFit.expand,
-                    children: [
-                      Image.file(
-                        File(thumbnailURL.toString()),
-                        fit: BoxFit.cover,
-                      ),
-                      // Positioned(
-                      //   child: Text('00:00'),
-                      // ) 
-                    ],
-                  )
-                : const Center(
-                    child: Icon(
-                    CustomeAppIcon.video_1,
-                    size: 40,
-                    color: AppColor.secondaryColor,
-                  )),
-          ),
+              width: 150,
+              height: 100,
+              color: AppColor.primaryColor,
+              // child: thumbnailURL,
+              child: thumbnailURL != null
+                  ? Stack(
+                      alignment: AlignmentDirectional.center,
+                      fit: StackFit.expand,
+                      children: [
+                        Image.file(
+                          File(thumbnailURL.toString()),
+                          fit: BoxFit.cover,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: fileDuration != null
+                                ? Text(
+                                    fileDuration.toString(),
+                                    style: CustomeTextStyle.fileDuration,
+                                  )
+                                : const Text(
+                                    '00 :00',
+                                    style: CustomeTextStyle.fileDuration,
+                                  ),
+                          ),
+                        )
+                      ],
+                    )
+                  : Stack(
+                      alignment: AlignmentDirectional.center,
+                      fit: StackFit.expand,
+                      children: [
+                        const Center(
+                            child: Icon(
+                          CustomeAppIcon.video_1,
+                          size: 40,
+                          color: AppColor.secondaryColor,
+                        )),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: fileDuration != null
+                                ? Text(
+                                    fileDuration.toString(),
+                                    style: CustomeTextStyle.fileDuration,
+                                  )
+                                : const Text(
+                                    '00 :00',
+                                    style: CustomeTextStyle.fileDuration,
+                                  ),
+                          ),
+                        )
+                      ],
+                    )),
         ),
         VideoName(
           input: fileName,
@@ -138,4 +177,6 @@ class CustomeSizes {
 class CustomeTextStyle {
   static const TextStyle fileNameWhite = TextStyle(
       color: AppColor.textColor, fontSize: 18, fontWeight: FontWeight.bold);
+  static const TextStyle fileDuration = TextStyle(
+      color: AppColor.textColor, fontSize: 12, fontWeight: FontWeight.bold);
 }
