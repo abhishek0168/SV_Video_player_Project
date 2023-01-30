@@ -56,9 +56,8 @@ class _VideoState extends State<Video> {
 class Videoplayer extends StatefulWidget {
   Videoplayer({super.key, required this.videoData, required this.index});
 
-  final List<VideoModel> videoData;
+  final String videoData;
   final int index;
-  late ValueNotifier<int> indexValue = ValueNotifier(index);
 
   @override
   State<Videoplayer> createState() => _VideoplayerState();
@@ -68,57 +67,42 @@ class _VideoplayerState extends State<Videoplayer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ValueListenableBuilder(
-        valueListenable: widget.indexValue,
-        builder: (context, _indexValue, _) {
-          return Stack(
-            children: [
-              Video(
-                videoPlayerController: VideoPlayerController.file(
-                    File(widget.videoData[_indexValue].videoUrl)),
-                loop: false,
-                autoplay: true,
-                aspectRatio: 16 / 9,
-              ),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        print('First value $_indexValue');
-                        setState(() {
-                          _indexValue--;
-                        });
-                        print('Second value $_indexValue');
-                      },
-                      child: const Icon(
-                        Icons.skip_previous,
-                        size: 40,
-                        color: AppColor.whiteColor,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 50,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        print('First value $_indexValue');
-                        _indexValue++;
-                        print('Second value $_indexValue');
-                      },
-                      child: const Icon(
-                        Icons.skip_next,
-                        size: 40,
-                        color: AppColor.whiteColor,
-                      ),
-                    ),
-                  ],
+      body: Stack(
+        children: [
+          Video(
+            videoPlayerController:
+                VideoPlayerController.file(File(widget.videoData)),
+            loop: false,
+            autoplay: true,
+            aspectRatio: 16 / 9,
+          ),
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {},
+                  child: const Icon(
+                    Icons.skip_previous,
+                    size: 40,
+                    color: AppColor.whiteColor,
+                  ),
                 ),
-              )
-            ],
-          );
-        },
+                const SizedBox(
+                  width: 50,
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: const Icon(
+                    Icons.skip_next,
+                    size: 40,
+                    color: AppColor.whiteColor,
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

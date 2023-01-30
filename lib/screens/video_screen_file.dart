@@ -38,7 +38,7 @@ class _VideoScreenState extends State<VideoScreen> {
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
                     return Videoplayer(
-                      videoData: videoDetails,
+                      videoData: videoDetails[index].videoUrl,
                       index: index,
                       
                     );
