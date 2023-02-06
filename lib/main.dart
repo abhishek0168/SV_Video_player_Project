@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
+import 'package:sv_video_app/db/functions/db_function_fav.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
+import 'package:sv_video_app/db/model/favourite_model.dart';
 
 import 'package:sv_video_app/screens/main_page.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
@@ -9,11 +11,17 @@ import 'package:sv_video_app/themes/app_colors.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  VideoDatabaseFunction().getAllVideos();
+
   if (!Hive.isAdapterRegistered(VideoModelAdapter().typeId)) {
     Hive.registerAdapter(VideoModelAdapter());
   }
 
+  if (!Hive.isAdapterRegistered(FavouriteModelAdapter().typeId)) {
+    Hive.registerAdapter(FavouriteModelAdapter());
+  }
+
+  VideoDatabaseFunction().getAllVideos();
+  
   runApp(const MyApp());
 }
 

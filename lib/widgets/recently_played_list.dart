@@ -14,7 +14,7 @@ class RecentlyPlayed extends StatelessWidget {
       padding: const EdgeInsets.only(right: 25),
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
-        return const VideoPreview(fileName: 'Pulimurugan');
+        return  VideoPreview(fileName: 'Pulimurugan');
       },
       separatorBuilder: (context, index) => const SizedBox(
         width: 20,

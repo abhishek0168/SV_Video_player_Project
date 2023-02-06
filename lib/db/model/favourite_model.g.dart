@@ -1,41 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'data_model.dart';
+part of 'favourite_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class VideoModelAdapter extends TypeAdapter<VideoModel> {
+class FavouriteModelAdapter extends TypeAdapter<FavouriteModel> {
   @override
-  final int typeId = 1;
+  final int typeId = 2;
 
   @override
-  VideoModel read(BinaryReader reader) {
+  FavouriteModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return VideoModel(
-      id: fields[0] as int?,
-      videoUrl: fields[1] as String,
-      videoName: fields[2] as String,
-      videoDuration: fields[3] as String,
+    return FavouriteModel(
+      key: fields[0] as int?,
+      favouriteUrl: fields[1] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, VideoModel obj) {
+  void write(BinaryWriter writer, FavouriteModel obj) {
     writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.videoUrl)
       ..writeByte(2)
-      ..write(obj.videoName)
-      ..writeByte(3)
-      ..write(obj.videoDuration);
+      ..writeByte(0)
+      ..write(obj.key)
+      ..writeByte(1)
+      ..write(obj.favouriteUrl);
   }
 
   @override
@@ -44,7 +38,7 @@ class VideoModelAdapter extends TypeAdapter<VideoModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is VideoModelAdapter &&
+      other is FavouriteModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sv_video_app/icons/Folder_icon.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
@@ -64,10 +65,12 @@ class VideoPreview extends StatelessWidget {
       {super.key,
       required this.fileName,
       this.thumbnailURL,
-      this.fileDuration});
+      this.fileDuration,
+      this.moreBottonFunction});
   final String fileName;
   final String? thumbnailURL;
   final String? fileDuration;
+  final Function()? moreBottonFunction;
 
   @override
   Widget build(BuildContext context) {
@@ -80,61 +83,55 @@ class VideoPreview extends StatelessWidget {
               height: 100,
               color: AppColor.primaryColor,
               // child: thumbnailURL,
-              child: thumbnailURL != null
-                  ? Stack(
-                      alignment: AlignmentDirectional.center,
-                      fit: StackFit.expand,
-                      children: [
-                        Image.file(
-                          File(thumbnailURL.toString()),
-                          fit: BoxFit.cover,
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: fileDuration != null
-                                ? Text(
-                                    fileDuration.toString(),
-                                    style: CustomeTextStyle.fileDuration,
-                                  )
-                                : const Text(
-                                    '00 :00',
-                                    style: CustomeTextStyle.fileDuration,
-                                  ),
-                          ),
-                        )
-                      ],
-                    )
-                  : Stack(
-                      alignment: AlignmentDirectional.center,
-                      fit: StackFit.expand,
-                      children: [
-                        const Center(
+              child: Stack(
+                alignment: AlignmentDirectional.center,
+                fit: StackFit.expand,
+                children: [
+                  Container(
+                    child: thumbnailURL != null
+                        ? Image.file(
+                            File(thumbnailURL.toString()),
+                            fit: BoxFit.cover,
+                          )
+                        : const Center(
                             child: Icon(
-                          CustomeAppIcon.video_1,
-                          size: 40,
-                          color: AppColor.secondaryColor,
+                            CustomeAppIcon.video_1,
+                            size: 40,
+                            color: AppColor.secondaryColor,
+                          )),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: fileDuration != null
+                          ? Text(
+                              fileDuration.toString(),
+                              style: CustomeTextStyle.fileDuration,
+                            )
+                          : const Text(
+                              '00 :00',
+                              style: CustomeTextStyle.fileDuration,
+                            ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: IconButton(
+                        onPressed: moreBottonFunction,
+                        icon: const Icon(
+                          Icons.more_vert,
+                          color: AppColor.whiteColor,
+                          shadows: <Shadow>[
+                            Shadow(color: Colors.black, blurRadius: 15.0)
+                          ],
+                          size: 20,
                         )),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: fileDuration != null
-                                ? Text(
-                                    fileDuration.toString(),
-                                    style: CustomeTextStyle.fileDuration,
-                                  )
-                                : const Text(
-                                    '00 :00',
-                                    style: CustomeTextStyle.fileDuration,
-                                  ),
-                          ),
-                        )
-                      ],
-                    )),
+                  )
+                ],
+              )),
         ),
         VideoName(
           input: fileName,
@@ -180,3 +177,5 @@ class CustomeTextStyle {
   static const TextStyle fileDuration = TextStyle(
       color: AppColor.textColor, fontSize: 12, fontWeight: FontWeight.bold);
 }
+
+

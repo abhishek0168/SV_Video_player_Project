@@ -16,9 +16,10 @@ class VideoModel {
   @HiveField(3)
   final String videoDuration;
 
-  VideoModel(
-      {this.id,
-      required this.videoUrl,
-      required this.videoName,
-      required this.videoDuration});
+  VideoModel({
+    this.id,
+    required this.videoUrl,
+    required this.videoName,
+    required this.videoDuration,
+  });
 }
