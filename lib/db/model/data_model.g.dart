@@ -21,13 +21,14 @@ class VideoModelAdapter extends TypeAdapter<VideoModel> {
       videoUrl: fields[1] as String,
       videoName: fields[2] as String,
       videoDuration: fields[3] as String,
+      videoFavourite: fields[4] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, VideoModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class VideoModelAdapter extends TypeAdapter<VideoModel> {
       ..writeByte(2)
       ..write(obj.videoName)
       ..writeByte(3)
-      ..write(obj.videoDuration);
+      ..write(obj.videoDuration)
+      ..writeByte(4)
+      ..write(obj.videoFavourite);
   }
 
   @override

@@ -1,69 +1,124 @@
+import 'dart:developer';
+
 import 'package:fetch_all_videos/fetch_all_videos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sv_video_app/db/model/favourite_model.dart';
 
 ValueNotifier<List<VideoModel>> videoListNotifier = ValueNotifier([]);
+ValueNotifier<List<VideoModel>> favList = ValueNotifier([]);
 
 class VideoDatabaseFunction {
-  getAllVideos() async {
-    final box = await Hive.openBox<VideoModel>('video_details');
-   
-    box.clear();
+  void fetchAllVideos() async {
+    final box = Hive.box<VideoModel>('video_details');
 
+    videoListNotifier.value.clear();
     // ---- Fetching all videos ---- //
+
     FetchAllVideos ob = FetchAllVideos();
     List videos = await ob.getAllVideos();
 
-
-
+    var flag = false;
     for (var fileDir in videos) {
-
-      
-      // ---- storing video name ---- //
-      String tempName = fileDir.toString();
-      if (tempName.endsWith('/')) {
-        tempName = tempName.substring(0, tempName.length - 1);
+      log('sorting video');
+      for (var item in box.values) {
+        if (fileDir == item.videoUrl) {
+          flag = true;
+          log('same video');
+          break;
+        }
       }
-      List<String> tempList = tempName.split('/');
-      String fileName = tempList.last;
-      fileName = fileName.replaceFirst(fileName[0], fileName[0].toUpperCase());
 
-      // ---- storing video duration ---- //
-      final videoInfo = await FlutterVideoInfo().getVideoInfo(fileDir);
-      double millisec = videoInfo!.duration!;
-      Duration videoDur = Duration(milliseconds: millisec.toInt());
-      String formattedDuration =
-          videoDur.toString().split('.').first.padLeft(8, "0");
+      if (!flag) {
+        // ---- storing video name ---- //
 
-      // ---- storing video thumbnail ---- //
+        String tempName = fileDir.toString();
+        if (tempName.endsWith('/')) {
+          tempName = tempName.substring(0, tempName.length - 1);
+        }
 
-      // File file = File(fileDir);
-      // Uint8List bytes = await file.readAsBytes();
+        List<String> tempList = tempName.split('/');
+        String fileName = tempList.last;
+        fileName =
+            fileName.replaceFirst(fileName[0], fileName[0].toUpperCase());
 
-      // // Decode the image from the byte array
-      // img.Image originalImage = img.decodeImage(bytes)!;
+        // ---- storing video duration ---- //
 
-      // // Resize the image
-      // img.Image thumbnail = img.copyResize(originalImage, width: 100);
+        final videoInfo = await FlutterVideoInfo().getVideoInfo(fileDir);
+        double millisec = videoInfo!.duration!;
+        Duration videoDur = Duration(milliseconds: millisec.toInt());
+        String formattedDuration =
+            videoDur.toString().split('.').first.padLeft(8, "0");
+        log('adding video');
+        var val = await box.add(VideoModel(
+            videoUrl: fileDir,
+            videoName: fileName,
+            videoDuration: formattedDuration,
+            videoFavourite: false));
 
-      // // Encode the image to a new byte array
-      // Uint8List thumbnailBytes = img.encodePng(thumbnail);
+        var data = box.get(val);
 
-      // // Create a new image object with the thumbnail image data
-      // Image thumbnailImage = Image.memory(thumbnailBytes);
-      // log(thumbnailImage.toString());
-
-      box.add(VideoModel(
-        videoUrl: fileDir,
-        videoName: fileName,
-        videoDuration: formattedDuration,
-      ));
+        await box.put(
+            val,
+            VideoModel(
+                videoUrl: data!.videoUrl,
+                videoName: data.videoName,
+                videoDuration: data.videoDuration,
+                id: val,
+                videoFavourite: data.videoFavourite));
+      }
+      flag = false;
     }
 
+    Set<dynamic> duplicateUrl = {};
+    var duplicateElements = [];
+
+    log(box.values.length.toString());
+    for (var item in box.values) {
+      log('finding duplicate');
+      if (!videos.contains(item.videoUrl)) {
+        box.delete(item.id!);
+        log('duplicate removed');
+      }
+    }
+    log(duplicateElements.toString());
+    log(box.values.length.toString());
     videoListNotifier.value.addAll(box.values);
+  }
+
+  void changeFavorites(VideoModel videoData) async {
+    final box = Hive.box<VideoModel>('video_details');
+    videoListNotifier.value.clear();
+
+    await box.put(
+      videoData.id,
+      VideoModel(
+        id: videoData.id,
+        videoUrl: videoData.videoUrl,
+        videoName: videoData.videoName,
+        videoDuration: videoData.videoDuration,
+        videoFavourite: !videoData.videoFavourite,
+      ),
+    );
+
+    videoListNotifier.value.addAll(box.values);
+    log(videoListNotifier.value.length.toString());
+  }
+
+  static void changeFavList() {
+    favList.value.clear();
+    for (var item in videoListNotifier.value) {
+      if (item.videoFavourite == true) {
+        favList.value.add(item);
+        log('video added to favList');
+      } else {
+        if (favList.value.contains(item)) {
+          favList.value.remove(item);
+          log('video removed from favList');
+        }
+      }
+    }
   }
 }

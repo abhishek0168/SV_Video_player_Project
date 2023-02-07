@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
-import 'package:sv_video_app/db/functions/db_function_fav.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
 import 'package:sv_video_app/db/model/favourite_model.dart';
 
@@ -19,9 +18,10 @@ void main() async {
   if (!Hive.isAdapterRegistered(FavouriteModelAdapter().typeId)) {
     Hive.registerAdapter(FavouriteModelAdapter());
   }
+  await Hive.openBox<VideoModel>('video_details');
 
-  VideoDatabaseFunction().getAllVideos();
-  
+  VideoDatabaseFunction().fetchAllVideos();
+
   runApp(const MyApp());
 }
 
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      // debugShowCheckedModeBanner: false,
       title: 'SV Player',
       theme: ThemeData(
         fontFamily: 'Inter',

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:sv_video_app/db/functions/db_function.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
 import 'package:sv_video_app/themes/custome_widgets.dart';
 import 'package:sv_video_app/widgets/Favorites_list.dart';
@@ -16,29 +15,30 @@ class HomeScreeen extends StatefulWidget {
 
 class _HomeScreeenState extends State<HomeScreeen> {
   @override
+  void initState() {
+    super.initState();
+     VideoDatabaseFunction.changeFavList();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.only(
         left: 25,
       ),
-      children: [
-        const PrimaryHeading(input: 'Favorite', textColor: AppColor.textColor),
-        //ignore: sized_box_for_whitespace
-        Container(
-          // color: AppColor.secondBgColor,
+      children: const [
+        PrimaryHeading(input: 'Favorite', textColor: AppColor.textColor),
+        SizedBox(
           height: 140,
-          child: const FavoritesList(),
+          child: FavoritesList(),
         ),
-        const PrimaryHeading(
-            input: 'Recently played', textColor: AppColor.textColor),
-        //ignore: sized_box_for_whitespace
-        Container(
-          // color: AppColor.secondBgColor,
+        PrimaryHeading(input: 'Recently played', textColor: AppColor.textColor),
+        SizedBox(
           height: 140,
-          child: const RecentlyPlayed(),
+          child: RecentlyPlayed(),
         ),
-        const PrimaryHeading(input: 'Storage', textColor: AppColor.textColor),
-        const StorageList(),
+        PrimaryHeading(input: 'Storage', textColor: AppColor.textColor),
+        StorageList(),
       ],
     );
   }

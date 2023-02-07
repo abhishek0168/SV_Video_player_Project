@@ -16,10 +16,14 @@ class VideoModel {
   @HiveField(3)
   final String videoDuration;
 
+  @HiveField(4)
+  bool videoFavourite = false;
+
   VideoModel({
     this.id,
     required this.videoUrl,
     required this.videoName,
     required this.videoDuration,
+    required this.videoFavourite,
   });
 }

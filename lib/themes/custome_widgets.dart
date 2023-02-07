@@ -178,4 +178,21 @@ class CustomeTextStyle {
       color: AppColor.textColor, fontSize: 12, fontWeight: FontWeight.bold);
 }
 
+class EmptyMessage extends StatelessWidget {
+  const EmptyMessage({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const [
+            Text(
+              'is empty',
+              style: CustomeTextStyle.fileDuration,
+            )
+          ]),
+    );
+  }
+}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sv_video_app/db/functions/db_function.dart';
 import 'package:sv_video_app/screens/home_screen_file.dart';
 import 'package:sv_video_app/screens/playlist_screen_file.dart';
 import 'package:sv_video_app/screens/video_screen_file.dart';
@@ -22,6 +23,16 @@ class _MainPageState extends State<MainPage> {
   onTab(int index) {
     setState(() {
       _currentIndex = index;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    setState(() {
+      favList.value;
     });
   }
 
