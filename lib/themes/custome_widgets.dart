@@ -169,6 +169,7 @@ class FolderIcon extends StatelessWidget {
 class CustomeSizes {
   static const double folderLarge = 120;
   static const double folderMideum = 70;
+  static const double iconSmall = 50;
 }
 
 class CustomeTextStyle {
@@ -189,7 +190,7 @@ class EmptyMessage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: const [
             Text(
-              'is empty',
+              'Is Empty',
               style: CustomeTextStyle.fileDuration,
             )
           ]),

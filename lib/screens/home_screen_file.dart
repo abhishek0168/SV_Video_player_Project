@@ -17,7 +17,7 @@ class _HomeScreeenState extends State<HomeScreeen> {
   @override
   void initState() {
     super.initState();
-     VideoDatabaseFunction.changeFavList();
+    VideoDatabaseFunction.changeFavList();
   }
 
   @override
@@ -26,19 +26,23 @@ class _HomeScreeenState extends State<HomeScreeen> {
       padding: const EdgeInsets.only(
         left: 25,
       ),
-      children: const [
-        PrimaryHeading(input: 'Favorite', textColor: AppColor.textColor),
-        SizedBox(
+      children: [
+        const PrimaryHeading(input: 'Favorite', textColor: AppColor.textColor),
+        const SizedBox(
           height: 140,
           child: FavoritesList(),
         ),
-        PrimaryHeading(input: 'Recently played', textColor: AppColor.textColor),
-        SizedBox(
+        const PrimaryHeading(
+            input: 'Recently played', textColor: AppColor.textColor),
+        const SizedBox(
           height: 140,
           child: RecentlyPlayed(),
         ),
-        PrimaryHeading(input: 'Storage', textColor: AppColor.textColor),
-        StorageList(),
+        const PrimaryHeading(input: 'Storage', textColor: AppColor.textColor),
+        SizedBox(
+          height: 150,
+          child: StorageList(),
+        ),
       ],
     );
   }

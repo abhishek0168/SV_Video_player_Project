@@ -14,8 +14,6 @@ class FavoritesList extends StatefulWidget {
 }
 
 class _FavoritesListState extends State<FavoritesList> {
-  
-
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -32,8 +30,9 @@ class _FavoritesListState extends State<FavoritesList> {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
                         return Videoplayer(
-                          videoData: favList[index].videoUrl,
+                          videoUrl: favList[index].videoUrl,
                           index: index,
+                          dbData: favList[index],
                         );
                       },
                     ));

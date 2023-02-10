@@ -1,35 +1,38 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'favourite_model.dart';
+part of 'playlist_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class FavouriteModelAdapter extends TypeAdapter<FavouriteModel> {
+class PlaylistModelAdapter extends TypeAdapter<PlaylistModel> {
   @override
   final int typeId = 2;
 
   @override
-  FavouriteModel read(BinaryReader reader) {
+  PlaylistModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return FavouriteModel(
-      key: fields[0] as int?,
-      favouriteUrl: fields[1] as String,
+    return PlaylistModel(
+      id: fields[1] as int?,
+      playlistItem: (fields[2] as List).cast<VideoModel>(),
+      playlistName: fields[3] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, FavouriteModel obj) {
+  void write(BinaryWriter writer, PlaylistModel obj) {
     writer
-      ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.key)
+      ..writeByte(3)
       ..writeByte(1)
-      ..write(obj.favouriteUrl);
+      ..write(obj.id)
+      ..writeByte(2)
+      ..write(obj.playlistItem)
+      ..writeByte(3)
+      ..write(obj.playlistName);
   }
 
   @override
@@ -38,7 +41,7 @@ class FavouriteModelAdapter extends TypeAdapter<FavouriteModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FavouriteModelAdapter &&
+      other is PlaylistModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

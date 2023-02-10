@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:sv_video_app/db/functions/db_function.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
 import 'package:video_player/video_player.dart';
 
@@ -54,16 +56,28 @@ class _VideoState extends State<Video> {
 }
 
 class Videoplayer extends StatefulWidget {
-  Videoplayer({super.key, required this.videoData, required this.index});
+  const Videoplayer({
+    super.key,
+    required this.videoUrl,
+    required this.index,
+    required this.dbData,
+  });
 
-  final String videoData;
+  final String videoUrl;
   final int index;
-
+  final VideoModel dbData;
   @override
   State<Videoplayer> createState() => _VideoplayerState();
 }
 
 class _VideoplayerState extends State<Videoplayer> {
+  @override
+  void initState() {
+    super.initState();
+    VideoDatabaseFunction.recentlyPlay(widget.dbData);
+    recentPlay.notifyListeners();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +85,7 @@ class _VideoplayerState extends State<Videoplayer> {
         children: [
           Video(
             videoPlayerController:
-                VideoPlayerController.file(File(widget.videoData)),
+                VideoPlayerController.file(File(widget.videoUrl)),
             loop: false,
             autoplay: true,
             aspectRatio: 16 / 9,

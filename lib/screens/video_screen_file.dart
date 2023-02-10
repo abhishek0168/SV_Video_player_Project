@@ -12,7 +12,6 @@ class VideoScreen extends StatefulWidget {
 }
 
 class _VideoScreenState extends State<VideoScreen> {
-  
   @override
   Widget build(BuildContext context) {
     return videoListNotifier.value.isNotEmpty
@@ -32,20 +31,22 @@ class _VideoScreenState extends State<VideoScreen> {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) {
                           return Videoplayer(
-                            videoData: videoDetails[index].videoUrl,
+                            videoUrl: videoDetails[index].videoUrl,
                             index: index,
+                            dbData: videoDetails[index],
                           );
                         },
                       ));
                     },
                     child: VideoPreview(
-                        fileName: videoDetails[index].videoName,
-                        fileDuration: videoDetails[index].videoDuration,
-                        // thumbnailURL: videoDetails[index].videoUrl,
-                        moreBottonFunction: () {
-                          CustomeFunctions.moreFunction(
-                              videoDetails[index], context);
-                        }),
+                      fileName: videoDetails[index].videoName,
+                      fileDuration: videoDetails[index].videoDuration,
+                      // thumbnailURL: videoDetails[index].videoUrl,
+                      moreBottonFunction: () {
+                        CustomeFunctions.moreFunction(
+                            videoDetails[index], context);
+                      },
+                    ),
                   );
                 },
                 itemCount: videoDetails.length,

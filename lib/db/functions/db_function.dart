@@ -9,6 +9,7 @@ import 'package:flutter/widgets.dart';
 
 ValueNotifier<List<VideoModel>> videoListNotifier = ValueNotifier([]);
 ValueNotifier<List<VideoModel>> favList = ValueNotifier([]);
+ValueNotifier<List<VideoModel>> recentPlay = ValueNotifier([]);
 
 class VideoDatabaseFunction {
   void fetchAllVideos() async {
@@ -72,9 +73,6 @@ class VideoDatabaseFunction {
       flag = false;
     }
 
-    Set<dynamic> duplicateUrl = {};
-    var duplicateElements = [];
-
     log(box.values.length.toString());
     for (var item in box.values) {
       log('finding duplicate');
@@ -83,10 +81,12 @@ class VideoDatabaseFunction {
         log('duplicate removed');
       }
     }
-    log(duplicateElements.toString());
+
     log(box.values.length.toString());
     videoListNotifier.value.addAll(box.values);
   }
+
+  // ---- Changing Favourite List ---- //
 
   void changeFavorites(VideoModel videoData) async {
     final box = Hive.box<VideoModel>('video_details');
@@ -120,5 +120,28 @@ class VideoDatabaseFunction {
         }
       }
     }
+
+   
+  }
+
+  static void recentlyPlay(VideoModel videoData) async {
+    recentPlay.value.clear();
+    log(recentPlay.value.toString());
+    final box = Hive.box<VideoModel>('video_recently');
+    final boxToList = box.values.toList();
+
+    boxToList.removeWhere(
+      (element) => element.id == videoData.id,
+    );
+    await box.clear();
+
+    boxToList.insert(0, videoData);
+
+    await box.addAll(boxToList);
+
+    log(box.values.toString());
+
+    recentPlay.value.addAll(box.values);
+    log(recentPlay.value.toString());
   }
 }

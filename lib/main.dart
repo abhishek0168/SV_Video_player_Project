@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
-import 'package:sv_video_app/db/model/favourite_model.dart';
+import 'package:sv_video_app/db/model/playlist_model.dart';
 
 import 'package:sv_video_app/screens/main_page.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
@@ -15,10 +15,13 @@ void main() async {
     Hive.registerAdapter(VideoModelAdapter());
   }
 
-  if (!Hive.isAdapterRegistered(FavouriteModelAdapter().typeId)) {
-    Hive.registerAdapter(FavouriteModelAdapter());
+  if (!Hive.isAdapterRegistered(PlaylistModelAdapter().typeId)) {
+    Hive.registerAdapter(PlaylistModelAdapter());
   }
+
   await Hive.openBox<VideoModel>('video_details');
+  await Hive.openBox<VideoModel>('video_recently');
+  // await Hive.openBox<>('playlist');
 
   VideoDatabaseFunction().fetchAllVideos();
 

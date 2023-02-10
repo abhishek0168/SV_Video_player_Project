@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:sv_video_app/db/functions/db_function.dart';
+import 'package:sv_video_app/screens/video_playing_screen.dart';
 import 'package:sv_video_app/themes/custome_widgets.dart';
 
 class RecentlyPlayed extends StatelessWidget {
@@ -9,17 +8,37 @@ class RecentlyPlayed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      shrinkWrap: true,
-      padding: const EdgeInsets.only(right: 25),
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (context, index) {
-        return  VideoPreview(fileName: 'Pulimurugan');
-      },
-      separatorBuilder: (context, index) => const SizedBox(
-        width: 20,
-      ),
-      itemCount: 5,
-    );
+    return ValueListenableBuilder(
+        valueListenable: recentPlay,
+        builder: (context, videoDetails, _) => recentPlay.value.isNotEmpty
+            ? ListView.separated(
+                shrinkWrap: true,
+                padding: const EdgeInsets.only(right: 25),
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Videoplayer(
+                            dbData: videoDetails[index],
+                            videoUrl: videoDetails[index].videoUrl,
+                            index: index,
+                          );
+                        },
+                      ));
+                    },
+                    child: VideoPreview(
+                      fileName: videoDetails[index].videoName,
+                      fileDuration: videoDetails[index].videoDuration,
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) => const SizedBox(
+                  width: 20,
+                ),
+                itemCount: videoDetails.length <= 5 ? videoDetails.length : 5,
+              )
+            : const EmptyMessage());
   }
 }
