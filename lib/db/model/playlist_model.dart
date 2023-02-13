@@ -10,6 +10,8 @@ class PlaylistModel {
   @HiveField(2)
   List<VideoModel> playlistItem;
 
+  
+
   @HiveField(3)
   String playlistName;
 

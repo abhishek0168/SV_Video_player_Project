@@ -21,7 +21,7 @@ void main() async {
 
   await Hive.openBox<VideoModel>('video_details');
   await Hive.openBox<VideoModel>('video_recently');
-  // await Hive.openBox<>('playlist');
+  await Hive.openBox<PlaylistModel>('playlist');
 
   VideoDatabaseFunction().fetchAllVideos();
 

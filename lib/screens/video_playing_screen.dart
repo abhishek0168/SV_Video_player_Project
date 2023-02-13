@@ -90,32 +90,32 @@ class _VideoplayerState extends State<Videoplayer> {
             autoplay: true,
             aspectRatio: 16 / 9,
           ),
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {},
-                  child: const Icon(
-                    Icons.skip_previous,
-                    size: 40,
-                    color: AppColor.whiteColor,
-                  ),
-                ),
-                const SizedBox(
-                  width: 50,
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: const Icon(
-                    Icons.skip_next,
-                    size: 40,
-                    color: AppColor.whiteColor,
-                  ),
-                ),
-              ],
-            ),
-          )
+          // Center(
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       InkWell(
+          //         onTap: () {},
+          //         child: const Icon(
+          //           Icons.skip_previous,
+          //           size: 40,
+          //           color: AppColor.whiteColor,
+          //         ),
+          //       ),
+          //       const SizedBox(
+          //         width: 50,
+          //       ),
+          //       InkWell(
+          //         onTap: () {},
+          //         child: const Icon(
+          //           Icons.skip_next,
+          //           size: 40,
+          //           color: AppColor.whiteColor,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // )
         ],
       ),
     );

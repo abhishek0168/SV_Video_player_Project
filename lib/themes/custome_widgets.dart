@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:sv_video_app/db/model/playlist_model.dart';
 import 'package:sv_video_app/icons/Folder_icon.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
 
@@ -175,6 +176,12 @@ class CustomeSizes {
 class CustomeTextStyle {
   static const TextStyle fileNameWhite = TextStyle(
       color: AppColor.textColor, fontSize: 18, fontWeight: FontWeight.bold);
+
+  static const TextStyle buttonText = TextStyle(
+      // color: AppColor.secondaryColor,
+      fontSize: 18,
+      fontWeight: FontWeight.bold);
+
   static const TextStyle fileDuration = TextStyle(
       color: AppColor.textColor, fontSize: 12, fontWeight: FontWeight.bold);
 }
@@ -196,4 +203,63 @@ class EmptyMessage extends StatelessWidget {
           ]),
     );
   }
+}
+
+class PlaylistPreview extends StatelessWidget {
+  const PlaylistPreview(
+      {super.key, required this.playlistData, this.moreFunction});
+
+  final PlaylistModel playlistData;
+  final void Function()? moreFunction;
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        color: AppColor.secondBgColor,
+        child: Column(children: [
+          Container(
+            color: AppColor.secondaryColor,
+            padding: const EdgeInsets.all(10),
+            width: 150,
+            height: 100,
+            child: const Icon(
+              CustomeAppIcon.video_1,
+              size: 70,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: VideoName(
+                      input: playlistData.playlistName,
+                      textAlign: TextAlign.left,
+                      width: 150),
+                ),
+                InkWell(
+                  onTap: moreFunction,
+                  child: const Icon(
+                    Icons.more_vert,
+                    color: AppColor.whiteColor,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ]),
+      ),
+    );
+  }
+}
+
+class CustomeButtonStyle {
+  static final ButtonStyle bgTextStyle = ElevatedButton.styleFrom(
+    textStyle: CustomeTextStyle.buttonText,
+    backgroundColor: AppColor.primaryColor,
+    foregroundColor: AppColor.secondaryColor,
+  );
 }
