@@ -8,7 +8,16 @@ import 'package:sv_video_app/db/model/playlist_model.dart';
 ValueNotifier<List<PlaylistModel>> playlistValue = ValueNotifier([]);
 
 class PlaylistFunction {
-  // ---- Creating playlist ---- //
+  // ---- Creating playlist ---- //\
+
+  void getAllPlaylist() {
+    final box = Hive.box<PlaylistModel>('playlist');
+    log('clearing playlist');
+    playlistValue.value.clear();
+    log('Adding playlist');
+
+    playlistValue.value.addAll(box.values);
+  }
 
   void createPlaylist(
       {required VideoModel itemData, required String playlistName}) async {
@@ -52,19 +61,20 @@ class PlaylistFunction {
     final box = Hive.box<PlaylistModel>('playlist');
     playlistValue.value.clear();
     bool flag = false;
-    PlaylistModel? dbitem;
+    late PlaylistModel dbitem;
     List<VideoModel>? dbList;
 
     for (var dbItem in box.values) {
       if (dbItem.playlistName == playlistName) {
         flag = true;
         dbitem = dbItem;
+        log('list name ${dbitem.playlistName} and and ${dbitem.id}'); // second time id become null
         break;
       }
     }
 
     if (flag) {
-      dbList = dbitem!.playlistItem.toList();
+      dbList = dbitem.playlistItem.toList();
 
       bool status = false;
       for (var item in dbList) {
@@ -73,7 +83,7 @@ class PlaylistFunction {
 
           // ---- Error message ---- //
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Video already in playlist')),
+            const SnackBar(content: Text('Video already in the playlist')),
           );
           break;
         }
@@ -83,17 +93,25 @@ class PlaylistFunction {
 
       if (!status) {
         dbitem.playlistItem.clear();
-        dbList.insert(0, itemData);
+        dbList.add(
+          VideoModel(
+            videoUrl: itemData.videoUrl,
+            videoName: itemData.videoName,
+            videoDuration: itemData.videoDuration,
+            videoFavourite: itemData.videoFavourite,
+          ),
+        );
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Video added to the playlist')),
         );
-
+        log(dbitem.id.runtimeType.toString()); // second time id become null
         await box.put(
           dbitem.id,
           PlaylistModel(
-            playlistItem: dbList,
-            playlistName: playlistName,
-          ),
+              playlistItem: dbList,
+              playlistName: dbitem.playlistName,
+              id: dbitem.id),
         );
       }
     }
@@ -105,36 +123,23 @@ class PlaylistFunction {
   // ---- removing video from playlist ---- //
 
   void removeFromPlaylist(
-      {required VideoModel itemData, required String playlistName}) async {
+      {required PlaylistModel itemData, required String index}) async {
     final box = Hive.box<PlaylistModel>('playlist');
+    log('remove index $index');
     playlistValue.value.clear();
-    bool flag = false;
-    PlaylistModel? dbitem;
-    List<VideoModel>? dbList;
+    final tempList = itemData.playlistItem;
 
-    for (var dbItem in box.values) {
-      if (dbItem.playlistName == playlistName) {
-        flag = true;
-        dbitem = dbItem;
-        break;
-      }
-    }
+    tempList.removeWhere((element) => element.videoUrl.contains(index));
 
-    if (flag) {
-      dbList = dbitem!.playlistItem.toList();
-      dbitem.playlistItem.clear();
-
-      dbList.removeWhere((element) => element.id == itemData.id);
-      await box.put(
-        dbitem.id,
-        PlaylistModel(
-          playlistItem: dbList,
-          playlistName: playlistName,
-        ),
-      );
-    } else {
-      // ---- Error message ---- //
-    }
+    //   log('remove from playlist id is ' + index.toString());
+    box.put(
+      itemData.id,
+      PlaylistModel(
+        playlistItem: tempList,
+        playlistName: itemData.playlistName,
+        id: itemData.id,
+      ),
+    );
 
     playlistValue.value.addAll(box.values);
     playlistValue.notifyListeners();
@@ -142,17 +147,11 @@ class PlaylistFunction {
 
   // ---- remove playlist ---- //
 
-  void removePlaylist({required String playlistName}) async {
+  void removePlaylist({required PlaylistModel itemData}) async {
     final box = Hive.box<PlaylistModel>('playlist');
     playlistValue.value.clear();
-    final tempList = box.values.toList();
-    box.clear();
-    log(playlistName);
-    tempList.removeWhere((element) {
-      return element.playlistName == playlistName;
-    });
-
-    box.addAll(tempList);
+    log(itemData.id.toString());
+    box.delete(itemData.id);
 
     playlistValue.value.addAll(box.values);
     playlistValue.notifyListeners();

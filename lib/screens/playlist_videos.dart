@@ -24,7 +24,7 @@ class VideosInPlaylist extends StatelessWidget {
         body: videoDetails.isNotEmpty
             ? ValueListenableBuilder(
                 valueListenable: playlistValue,
-                builder: (context, value, _) {
+                builder: (context, playlistValue, _) {
                   return ListView.separated(
                       itemBuilder: (context, index) {
                         return InkWell(
@@ -52,8 +52,9 @@ class VideosInPlaylist extends StatelessWidget {
                             trailing: IconButton(
                                 onPressed: () {
                                   PlaylistFunction().removeFromPlaylist(
-                                      itemData: videoDetails[index],
-                                      playlistName: playlistName);
+                                    itemData: playlistValue[index],
+                                    index: videoDetails[index].videoUrl,
+                                  );
                                 },
                                 icon: const Icon(
                                   Icons.delete,

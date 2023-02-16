@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sv_video_app/db/functions/db_function.dart';
 import 'package:sv_video_app/screens/home_screen_file.dart';
 import 'package:sv_video_app/screens/playlist_screen_file.dart';
 import 'package:sv_video_app/screens/video_screen_file.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
+import 'package:sv_video_app/themes/custome_widgets.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -26,25 +26,41 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-    setState(() {
-      favList.value;
-    });
+  void _openEndDrawer() {
+    _scaffoldKey.currentState!.openEndDrawer();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
+        toolbarHeight: 70,
         backgroundColor: AppColor.bgColor,
         title: Image.asset('assets/images/logo-full.png', width: 140),
         elevation: 0,
+        automaticallyImplyLeading: true,
+        // leading: Visibility(child: TextFormField()),
+        actions: [
+          Visibility(
+            visible: _currentIndex == 0 ? true : false,
+            child: IconButton(
+              onPressed: () {
+                showSearch(context: context, delegate: CustomSearch());
+              },
+              icon: const Icon(Icons.search),
+            ),
+          ),
+          IconButton(onPressed: _openEndDrawer, icon: const Icon(Icons.dehaze))
+        ],
       ),
       body: screens[_currentIndex],
+      endDrawer: const Drawer(
+        backgroundColor: AppColor.bgColor,
+        child: DrawerView(),
+      ),
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
@@ -73,6 +89,67 @@ class _MainPageState extends State<MainPage> {
               label: 'Playlist',
             ),
           ]),
+    );
+  }
+}
+
+class DrawerView extends StatelessWidget {
+  const DrawerView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        DrawerHeader(
+          padding: EdgeInsets.zero,
+          child: Container(
+            color: AppColor.secondaryColor,
+            child: Center(
+              child: Image.asset('assets/images/logo-full.png'),
+            ),
+          ),
+        ),
+        ListTile(
+          leading: customIconMenu(Icons.library_books_rounded),
+          title: const Text(
+            'Terms and conditions',
+            style: CustomeTextStyle.fileNameWhite,
+          ),
+          onTap: () {},
+        ),
+        ListTile(
+          leading: customIconMenu(Icons.key),
+          title: const Text(
+            'privacy policy',
+            style: CustomeTextStyle.fileNameWhite,
+          ),
+          onTap: () {},
+        ),
+        ListTile(
+          leading: customIconMenu(Icons.star),
+          title: const Text(
+            'Rate us',
+            style: CustomeTextStyle.fileNameWhite,
+          ),
+          onTap: () {},
+        ),
+        ListTile(
+          leading: customIconMenu(Icons.person),
+          title: const Text(
+            'About us',
+            style: CustomeTextStyle.fileNameWhite,
+          ),
+          onTap: () {},
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 30),
+          child: Text(
+            'version 1.0.0',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: AppColor.secondBgColor),
+          ),
+        )
+      ],
     );
   }
 }

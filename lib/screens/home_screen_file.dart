@@ -17,7 +17,8 @@ class _HomeScreeenState extends State<HomeScreeen> {
   @override
   void initState() {
     super.initState();
-    VideoDatabaseFunction.changeFavList();
+    VideoDatabaseFunction().changeFavList();
+    
   }
 
   @override

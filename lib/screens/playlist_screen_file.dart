@@ -16,6 +16,13 @@ class PlaylistScreen extends StatefulWidget {
 
 class _PlaylistScreenState extends State<PlaylistScreen> {
   @override
+  void initState() {
+    
+    super.initState();
+    PlaylistFunction().getAllPlaylist();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ValueListenableBuilder(
@@ -76,9 +83,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   children: [
                     InkWell(
                       onTap: () {
-                        
-                        PlaylistFunction().removePlaylist(
-                            playlistName: deleteItem.playlistName);
+                        PlaylistFunction().removePlaylist(itemData: deleteItem);
                         Navigator.pop(context);
                       },
                       child: Row(

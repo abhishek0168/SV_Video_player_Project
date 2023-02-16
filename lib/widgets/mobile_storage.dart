@@ -29,11 +29,11 @@ class StorageList extends StatelessWidget {
                   controller.openDirectory(storageList[index]);
                   // Navigator.pop(context);
                   log(storageList.toString());
-                  // Navigator.push(context, MaterialPageRoute(
-                  //   builder: (context) {
-                  //     return;
-                  //   },
-                  // ));
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return InternalStorageFile();
+                    },
+                  ));
                 },
                 child: Column(
                   children: [

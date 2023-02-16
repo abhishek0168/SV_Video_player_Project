@@ -80,7 +80,7 @@ class CustomeFunctions {
       },
     );
 
-    VideoDatabaseFunction.changeFavList();
+    VideoDatabaseFunction().changeFavList();
   }
 
   static void morePlaylistFunction(VideoModel item, BuildContext context) {

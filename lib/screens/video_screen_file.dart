@@ -19,7 +19,8 @@ class _VideoScreenState extends State<VideoScreen> {
             valueListenable: videoListNotifier,
             builder: (context, videoDetails, _) {
               return GridView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 250,
                   mainAxisSpacing: 0,
@@ -43,7 +44,8 @@ class _VideoScreenState extends State<VideoScreen> {
                       fileDuration: videoDetails[index].videoDuration,
                       // thumbnailURL: videoDetails[index].videoUrl,
                       moreBottonFunction: () {
-                        CustomeFunctions.moreFunction(videoDetails[index], context);
+                        CustomeFunctions.moreFunction(
+                            videoDetails[index], context);
                       },
                     ),
                   );

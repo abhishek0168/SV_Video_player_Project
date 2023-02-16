@@ -356,10 +356,10 @@ packages:
     dependency: transitive
     description:
       name: font_awesome_flutter
-      sha256: "875dbb9ec1ad30d68102019ceb682760d06c72747c1c5b7885781b95f88569cc"
+      sha256: "959ef4add147753f990b4a7c6cccb746d5792dbdc81b1cde99e62e7edb31b206"
       url: "https://pub.dev"
     source: hosted
-    version: "10.3.0"
+    version: "10.4.0"
   frontend_server_client:
     dependency: transitive
     description:
@@ -432,14 +432,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
-  image:
-    dependency: "direct main"
-    description:
-      name: image
-      sha256: "1f9ecf99b08c92dedb699de1d28549f5d79b4423b48cf3f95d6968156db5dd67"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.12"
   io:
     dependency: transitive
     description:
@@ -529,7 +521,7 @@ packages:
     source: hosted
     version: "2.1.0"
   path:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path
       sha256: db9d4f58c908a4ba5953fcee2ae317c94889433e5024c27ce74a37f94267945b
@@ -537,7 +529,7 @@ packages:
     source: hosted
     version: "1.8.2"
   path_provider:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path_provider
       sha256: dcea5feb97d8abf90cab9e9030b497fb7c3cbf26b7a1fe9e3ef7dcb0a1ddec95
@@ -761,10 +753,10 @@ packages:
     dependency: transitive
     description:
       name: spreadsheet_decoder
-      sha256: "783b13e16839e564973b3f02217db33de5929838cb9312acee88030324f6d553"
+      sha256: "1678ea1aa88880b9d69dd979851d05d424f2f5f5426f6b93bbd99c9a8cd1bff5"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.1"
+    version: "2.2.0"
   stack_trace:
     dependency: transitive
     description:
@@ -825,10 +817,10 @@ packages:
     dependency: "direct main"
     description:
       name: thumbnailer
-      sha256: "4974a51ce93b22543122775adb4fc98198ae8c67a87740906920a3474b0bebfa"
+      sha256: a6a28c1a049dc2d443f1e4a189169359e3ba17b110e3e29d65e5c49278d0c02b
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "2.2.0"
   timing:
     dependency: transitive
     description:

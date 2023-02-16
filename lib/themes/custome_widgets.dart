@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:sv_video_app/db/functions/db_function.dart';
+import 'package:sv_video_app/db/model/data_model.dart';
 import 'package:sv_video_app/db/model/playlist_model.dart';
 import 'package:sv_video_app/icons/Folder_icon.dart';
+import 'package:sv_video_app/screens/video_playing_screen.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
 
 class PrimaryHeading extends StatelessWidget {
@@ -171,6 +174,7 @@ class CustomeSizes {
   static const double folderLarge = 120;
   static const double folderMideum = 70;
   static const double iconSmall = 50;
+  static const double iconUltraSmall = 30;
 }
 
 class CustomeTextStyle {
@@ -262,4 +266,125 @@ class CustomeButtonStyle {
     backgroundColor: AppColor.primaryColor,
     foregroundColor: AppColor.secondaryColor,
   );
+}
+
+Widget customIconMenu(IconData selectIcon) {
+  return Icon(
+    selectIcon,
+    color: AppColor.whiteColor,
+    size: CustomeSizes.iconUltraSmall,
+  );
+}
+
+class CustomSearch extends SearchDelegate {
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+        onPressed: () {
+          query = '';
+        },
+        icon: const Icon(Icons.clear),
+      ),
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          close(context, null);
+        },
+        icon: const Icon(Icons.arrow_back));
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<VideoModel> matchQuery = [];
+    for (var item in videoListNotifier.value) {
+      if (item.videoName.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(item);
+      }
+    }
+
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        var result = matchQuery[index];
+        return matchQuery.isNotEmpty
+            ? InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return Videoplayer(
+                        videoUrl: result.videoUrl,
+                        index: index,
+                        dbData: result,
+                      );
+                    },
+                  ));
+                },
+                child: ListTile(
+                  leading: const Icon(
+                    CustomeAppIcon.video,
+                    color: AppColor.primaryColor,
+                    size: CustomeSizes.iconSmall,
+                  ),
+                  title: VideoName(
+                      input: result.videoName,
+                      textAlign: TextAlign.left,
+                      width: 200),
+                  subtitle: Text(
+                    result.videoDuration,
+                    style: const TextStyle(color: AppColor.secondaryColor),
+                  ),
+                ),
+              )
+            : const EmptyMessage();
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<VideoModel> matchQuery = [];
+    for (var item in videoListNotifier.value) {
+      if (item.videoName.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(item);
+      }
+    }
+
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        var result = matchQuery[index];
+        return matchQuery.isNotEmpty
+            ? InkWell(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return Videoplayer(
+                        videoUrl: result.videoUrl,
+                        index: index,
+                        dbData: result,
+                      );
+                    },
+                  ));
+                },
+                child: ListTile(
+                  leading: const Icon(
+                    CustomeAppIcon.video,
+                    color: AppColor.primaryColor,
+                    size: CustomeSizes.iconSmall,
+                  ),
+                  title: VideoName(
+                      input: result.videoName,
+                      textAlign: TextAlign.left,
+                      width: 200),
+                ),
+              )
+            : const EmptyMessage();
+      },
+    );
+  }
 }

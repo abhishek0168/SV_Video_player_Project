@@ -4,6 +4,7 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
+import 'package:sv_video_app/main.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
 import 'package:video_player/video_player.dart';
 

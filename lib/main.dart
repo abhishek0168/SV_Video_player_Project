@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
+import 'package:sv_video_app/db/functions/playlist_function.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
 import 'package:sv_video_app/db/model/playlist_model.dart';
 
@@ -23,7 +24,9 @@ void main() async {
   await Hive.openBox<VideoModel>('video_recently');
   await Hive.openBox<PlaylistModel>('playlist');
 
-  VideoDatabaseFunction().fetchAllVideos();
+  VideoDatabaseFunction().getAllVideos();
+  PlaylistFunction().getAllPlaylist();
+  VideoDatabaseFunction().changeFavList();
 
   runApp(const MyApp());
 }
