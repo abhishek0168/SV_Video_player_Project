@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:sv_video_app/icons/Folder_icon.dart';
+import 'package:sv_video_app/screens/video_playing_screen.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
 import 'package:file_manager/file_manager.dart';
 import 'package:sv_video_app/themes/custome_widgets.dart';
@@ -66,7 +68,22 @@ class _InternalStorageFileState extends State<InternalStorageFile> {
                     // Navigator.push( context, MaterialPageRoute( builder: (context) {}));
                     // open directory
                   } else {
-                    // Perform file-related tasks.
+                    log(entities[index].toString());
+                    String item = entities[index]
+                        .toString()
+                        .substring(7, entities[index].toString().length - 1);
+                    log(item);
+                    if (item.startsWith('/')) {
+                      item = item.substring(1, item.length);
+                    }
+                    log(item);
+                    if (item.endsWith('mp4')) {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Videoplayer(videoUrl: item, index: index);
+                        },
+                      ));
+                    }
                   }
                 },
               );

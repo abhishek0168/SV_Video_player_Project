@@ -1,12 +1,13 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:fetch_all_videos/fetch_all_videos.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:thumbnailer/thumbnailer.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 ValueNotifier<List<VideoModel>> videoListNotifier = ValueNotifier([]);
@@ -20,22 +21,20 @@ class VideoDatabaseFunction {
     final box = Hive.box<VideoModel>('video_details');
     videoListNotifier.value.clear();
     videoListNotifier.value.addAll(box.values);
-    // ignore: prefer_interpolation_to_compose_strings
-    log("from get all videos " + videoListNotifier.value.length.toString());
-    await fetchAllVideos();
-
-    changeFavList();
 
     // ---- recently played database ---- //
 
     final recent = Hive.box<VideoModel>('video_recently');
     recentPlay.value.clear();
+    log('recent clearing');
     recentPlay.value.addAll(recent.values);
+    await fetchAllVideos();
+
+    changeFavList();
   }
 
   Future<void> fetchAllVideos() async {
     final box = Hive.box<VideoModel>('video_details');
-    log('fetch videos ' + videoListNotifier.value.length.toString());
     videoListNotifier.value.clear();
 
 // ---- Fetching all videos ---- //
@@ -75,15 +74,20 @@ class VideoDatabaseFunction {
         String formattedDuration =
             videoDur.toString().split('.').first.padLeft(8, "0");
 
-// ---- adding video thumbnail ---- //
+// ---- thumbnail ----//
+        try {
+          File tempUrl = File(fileDir);
+          final uint8list = await VideoThumbnail.thumbnailData(
+            video: fileDir,
+            imageFormat: ImageFormat.JPEG,
+            maxWidth: 128,
+            quality: 25,
+          );
+        } catch (e) {
+          log(e.toString());
+        }   
 
-final thumbnailer = Thumbnailer();
-  // final thumbnail = Thumbnailer()
-
-// ---- ---- ---- ---- ---- ---- //
-
-        
-
+// - - - - - - - - - - //
         log('adding video');
         var val = await box.add(VideoModel(
             videoUrl: fileDir,
@@ -163,6 +167,29 @@ final thumbnailer = Thumbnailer();
     }
 
     favList.notifyListeners();
+  }
+
+  static void addToRecently(String videoUrl) {
+    final box = Hive.box<VideoModel>('video_details');
+    VideoModel? tempItem;
+    bool status = false;
+    for (var element in box.values) {
+      String tempLink = element.videoUrl;
+      if (tempLink.endsWith('/')) {
+        tempLink = tempLink.substring(0, tempLink.length - 1);
+      }
+      if (videoUrl == tempLink) {
+        log('add to recent if');
+        tempItem = element;
+        status = true;
+        break;
+      }
+    }
+    if (status) {
+      recentlyPlay(tempItem!);
+    } else {
+      log('add to recent not working');
+    }
   }
 
   static void recentlyPlay(VideoModel videoData) async {

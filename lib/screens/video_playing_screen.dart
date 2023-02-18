@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:developer';
 
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
@@ -61,12 +62,12 @@ class Videoplayer extends StatefulWidget {
     super.key,
     required this.videoUrl,
     required this.index,
-    required this.dbData,
+    this.dbData,
   });
 
   final String videoUrl;
   final int index;
-  final VideoModel dbData;
+  final VideoModel? dbData;
   @override
   State<Videoplayer> createState() => _VideoplayerState();
 }
@@ -75,12 +76,15 @@ class _VideoplayerState extends State<Videoplayer> {
   @override
   void initState() {
     super.initState();
-    VideoDatabaseFunction.recentlyPlay(widget.dbData);
+    // VideoDatabaseFunction.recentlyPlay(widget.dbData!);
+    // addingToRecent();
+    VideoDatabaseFunction.addToRecently(widget.videoUrl);
     recentPlay.notifyListeners();
   }
 
   @override
   Widget build(BuildContext context) {
+    log(widget.videoUrl);
     return Scaffold(
       body: Stack(
         children: [

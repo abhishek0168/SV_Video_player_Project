@@ -188,6 +188,12 @@ class CustomeTextStyle {
 
   static const TextStyle fileDuration = TextStyle(
       color: AppColor.textColor, fontSize: 12, fontWeight: FontWeight.bold);
+
+  static const TextStyle defultText =
+      TextStyle(color: AppColor.textColor, fontSize: 13);
+
+  static const TextStyle headingText = TextStyle(
+      color: AppColor.textColor, fontSize: 15, fontWeight: FontWeight.bold);
 }
 
 class EmptyMessage extends StatelessWidget {
@@ -385,6 +391,30 @@ class CustomSearch extends SearchDelegate {
               )
             : const EmptyMessage();
       },
+    );
+  }
+}
+
+class PopupDialogBox extends StatefulWidget {
+  const PopupDialogBox({super.key, required this.popupContent});
+  final Widget popupContent;
+  @override
+  State<PopupDialogBox> createState() => _PopupDialogBoxState();
+}
+
+class _PopupDialogBoxState extends State<PopupDialogBox> {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        color: AppColor.secondBgColor,
+        width: 350,
+        height: 600,
+        child: SingleChildScrollView(
+          child: widget.popupContent,
+        ),
+      ),
     );
   }
 }

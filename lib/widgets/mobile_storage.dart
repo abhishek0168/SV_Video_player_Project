@@ -24,6 +24,7 @@ class StorageList extends StatelessWidget {
           return ListView.builder(
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
+              final bahu = storageList[index];
               return InkWell(
                 onTap: () {
                   controller.openDirectory(storageList[index]);
@@ -31,7 +32,7 @@ class StorageList extends StatelessWidget {
                   log(storageList.toString());
                   Navigator.push(context, MaterialPageRoute(
                     builder: (context) {
-                      return InternalStorageFile();
+                      return const InternalStorageFile();
                     },
                   ));
                 },

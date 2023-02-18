@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sv_video_app/screens/home_screen_file.dart';
 import 'package:sv_video_app/screens/playlist_screen_file.dart';
 import 'package:sv_video_app/screens/video_screen_file.dart';
+import 'package:sv_video_app/text/texts.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
 import 'package:sv_video_app/themes/custome_widgets.dart';
 
@@ -30,6 +31,10 @@ class _MainPageState extends State<MainPage> {
 
   void _openEndDrawer() {
     _scaffoldKey.currentState!.openEndDrawer();
+  }
+
+  void _closeEndDrawer() {
+    Navigator.pop(context);
   }
 
   @override
@@ -93,9 +98,14 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
-class DrawerView extends StatelessWidget {
+class DrawerView extends StatefulWidget {
   const DrawerView({super.key});
 
+  @override
+  State<DrawerView> createState() => _DrawerViewState();
+}
+
+class _DrawerViewState extends State<DrawerView> {
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -115,7 +125,14 @@ class DrawerView extends StatelessWidget {
             'Terms and conditions',
             style: CustomeTextStyle.fileNameWhite,
           ),
-          onTap: () {},
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return PopupDialogBox(popupContent: AppText.termsAndConditons);
+              },
+            );
+          },
         ),
         ListTile(
           leading: customIconMenu(Icons.key),
@@ -123,7 +140,15 @@ class DrawerView extends StatelessWidget {
             'privacy policy',
             style: CustomeTextStyle.fileNameWhite,
           ),
-          onTap: () {},
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return PopupDialogBox(popupContent: AppText.privacyPolicy);
+              },
+            );
+            // Navigator.pop(context);
+          },
         ),
         ListTile(
           leading: customIconMenu(Icons.star),
@@ -131,7 +156,9 @@ class DrawerView extends StatelessWidget {
             'Rate us',
             style: CustomeTextStyle.fileNameWhite,
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.pop(context);
+          },
         ),
         ListTile(
           leading: customIconMenu(Icons.person),
@@ -139,7 +166,9 @@ class DrawerView extends StatelessWidget {
             'About us',
             style: CustomeTextStyle.fileNameWhite,
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.pop(context);
+          },
         ),
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 30),
