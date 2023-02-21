@@ -3,10 +3,7 @@ import 'dart:developer';
 
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
-import 'package:sv_video_app/main.dart';
-import 'package:sv_video_app/themes/app_colors.dart';
 import 'package:video_player/video_player.dart';
 
 import '../db/model/data_model.dart';
@@ -42,6 +39,7 @@ class _VideoState extends State<Video> {
       aspectRatio: widget.aspectRatio,
       // customControls: CustomControls(chewieController: _chewieController),
     );
+    setState(() {});
   }
 
   @override
@@ -88,12 +86,19 @@ class _VideoplayerState extends State<Videoplayer> {
     return Scaffold(
       body: Stack(
         children: [
-          Video(
-            videoPlayerController:
-                VideoPlayerController.file(File(widget.videoUrl)),
-            loop: false,
-            autoplay: true,
-            aspectRatio: 16 / 9,
+          Transform.scale(
+            scale: VideoPlayerController.file(File(widget.videoUrl))
+                .value
+                .aspectRatio,
+            child: Video(
+              videoPlayerController:
+                  VideoPlayerController.file(File(widget.videoUrl)),
+              loop: false,
+              autoplay: true,
+              aspectRatio: VideoPlayerController.file(File(widget.videoUrl))
+                  .value
+                  .aspectRatio,
+            ),
           ),
           // Center(
           //   child: Row(

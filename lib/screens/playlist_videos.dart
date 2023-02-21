@@ -52,8 +52,8 @@ class VideosInPlaylist extends StatelessWidget {
                             trailing: IconButton(
                                 onPressed: () {
                                   PlaylistFunction().removeFromPlaylist(
-                                    itemData: playlistValue[index],
-                                    index: videoDetails[index].videoUrl,
+                                    itemData: playlistValue[indexValue],
+                                    videoUrl: videoDetails[index].videoUrl,
                                   );
                                 },
                                 icon: const Icon(

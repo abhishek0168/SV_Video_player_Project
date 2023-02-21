@@ -123,19 +123,25 @@ class PlaylistFunction {
   // ---- removing video from playlist ---- //
 
   void removeFromPlaylist(
-      {required PlaylistModel itemData, required String index}) async {
+      {required PlaylistModel itemData, required String videoUrl}) async {
     final box = Hive.box<PlaylistModel>('playlist');
-    log('remove index $index');
+    log('remove index $videoUrl');
     playlistValue.value.clear();
-    final tempList = itemData.playlistItem;
+    List<VideoModel>? tempList;
 
-    tempList.removeWhere((element) => element.videoUrl.contains(index));
+    // tempList.removeWhere((element) => element.videoUrl.contains(videoUrl));
+    for (var element in itemData.playlistItem) {
+      if (element.videoUrl == videoUrl) {
+        itemData.playlistItem.remove(element);
+        tempList = itemData.playlistItem;
+        break;
+      }
+    }
 
-    //   log('remove from playlist id is ' + index.toString());
     box.put(
       itemData.id,
       PlaylistModel(
-        playlistItem: tempList,
+        playlistItem: tempList!,
         playlistName: itemData.playlistName,
         id: itemData.id,
       ),
@@ -149,9 +155,28 @@ class PlaylistFunction {
 
   void removePlaylist({required PlaylistModel itemData}) async {
     final box = Hive.box<PlaylistModel>('playlist');
-    playlistValue.value.clear();
+    // playlistValue.value.clear();
     log(itemData.id.toString());
     box.delete(itemData.id);
+
+    playlistValue.value.addAll(box.values);
+    playlistValue.notifyListeners();
+  }
+
+  void renamePlaylist(
+      {required PlaylistModel itemData, required String playlistRename}) {
+    final box = Hive.box<PlaylistModel>('playlist');
+    playlistValue.value.clear();
+    log(itemData.id.toString());
+    log(itemData.playlistName.toString());
+    box.put(
+      itemData.id,
+      PlaylistModel(
+        id: itemData.id,
+        playlistItem: itemData.playlistItem,
+        playlistName: playlistRename,
+      ),
+    );
 
     playlistValue.value.addAll(box.values);
     playlistValue.notifyListeners();

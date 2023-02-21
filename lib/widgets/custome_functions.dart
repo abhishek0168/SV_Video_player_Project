@@ -1,11 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
 import 'package:sv_video_app/db/functions/playlist_function.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
-import 'package:sv_video_app/db/model/playlist_model.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
 import 'package:sv_video_app/themes/custome_widgets.dart';
 
@@ -31,6 +29,7 @@ class CustomeFunctions {
               InkWell(
                 onTap: () {
                   VideoDatabaseFunction().changeFavorites(item);
+
                   log(item.videoFavourite.toString());
                   log(item.toString());
 
@@ -89,106 +88,116 @@ class CustomeFunctions {
     final _formKey = GlobalKey<FormState>();
     showModalBottomSheet(
       useRootNavigator: true,
+      isScrollControlled: true,
       context: context,
       builder: (context) {
+        log(MediaQuery.of(context).size.height.toString() + 'is the height');
         return Form(
           key: _formKey,
-          child: SingleChildScrollView(
-            child: Container(
-              color: AppColor.secondBgColor,
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 7,
-                        child: TextFormField(
-                          controller: playlistNameController,
-                          validator: (playlistNameController) {
-                            for (var item in playlistValue.value) {
-                              if (playlistNameController == item.playlistName) {
-                                return 'This name already exists';
+          child: Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: SingleChildScrollView(
+              child: Container(
+                color: AppColor.secondBgColor,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          flex: 7,
+                          child: TextFormField(
+                            controller: playlistNameController,
+                            validator: (playlistNameController) {
+                              for (var item in playlistValue.value) {
+                                if (playlistNameController ==
+                                    item.playlistName) {
+                                  return 'This name already exists';
+                                }
                               }
-                            }
-                            if (playlistNameController == null ||
-                                playlistNameController.isEmpty) {
-                              return 'Please enter a name';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: const BorderSide(
-                                width: 1,
-                                color: AppColor.whiteColor,
+                              if (playlistNameController == null ||
+                                  playlistNameController.isEmpty) {
+                                return 'Please enter a name';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide: const BorderSide(
+                                  width: 1,
+                                  color: AppColor.whiteColor,
+                                ),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: AppColor.whiteColor,
+                                ),
                               ),
                             ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: AppColor.whiteColor,
-                              ),
-                            ),
+                            style: const TextStyle(color: AppColor.textColor),
                           ),
-                          style: const TextStyle(color: AppColor.textColor),
                         ),
-                      ),
-                      const Spacer(),
-                      Expanded(
-                        flex: 3,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              PlaylistFunction().createPlaylist(
-                                  itemData: item,
-                                  playlistName: playlistNameController.text);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Creating playlist')),
-                              );
-                              Navigator.pop(context);
-                            }
-                          },
-                          style: CustomeButtonStyle.bgTextStyle,
-                          child: const Text('Create'),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    height: 300,
-                    child: ListView.builder(
-                      itemBuilder: (context, index) => Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          VideoName(
-                              input: playlistValue.value[index].playlistName,
-                              textAlign: TextAlign.left,
-                              width: 200),
-                          ElevatedButton(
+                        const Spacer(),
+                        Expanded(
+                          flex: 3,
+                          child: ElevatedButton(
                             onPressed: () {
-                              PlaylistFunction().addToPlaylist(
-                                  context: context,
-                                  itemData: item,
-                                  playlistName:
-                                      playlistValue.value[index].playlistName);
-
-                              Navigator.pop(context);
+                              if (_formKey.currentState!.validate()) {
+                                PlaylistFunction().createPlaylist(
+                                    itemData: item,
+                                    playlistName: playlistNameController.text);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Creating playlist')),
+                                );
+                                Navigator.pop(context);
+                              }
                             },
                             style: CustomeButtonStyle.bgTextStyle,
-                            child: const Text('Add'),
+                            child: const Text('Create'),
                           ),
-                        ],
-                      ),
-                      itemCount: playlistValue.value.length,
+                        ),
+                      ],
                     ),
-                  )
-                ],
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      height: null,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (ctx, index) => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            VideoName(
+                                input: playlistValue.value[index].playlistName,
+                                textAlign: TextAlign.left,
+                                width: 200),
+                            ElevatedButton(
+                              onPressed: () {
+                                PlaylistFunction().addToPlaylist(
+                                    context: context,
+                                    itemData: item,
+                                    playlistName: playlistValue
+                                        .value[index].playlistName);
+
+                                Navigator.pop(context);
+                              },
+                              style: CustomeButtonStyle.bgTextStyle,
+                              child: const Text('Add'),
+                            ),
+                          ],
+                        ),
+                        itemCount: playlistValue.value.length,
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

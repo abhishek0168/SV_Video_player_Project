@@ -17,15 +17,17 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   void initState() {
     super.initState();
+    // VideoDatabaseFunction().getAllVideos();
   }
 
   @override
   Widget build(BuildContext context) {
-    return videoListNotifier.value.isNotEmpty
-        ? ValueListenableBuilder(
-            valueListenable: videoListNotifier,
-            builder: (context, videoDetails, _) {
-              return GridView.builder(
+    return ValueListenableBuilder(
+      valueListenable: videoListNotifier,
+      builder: (context, videoDetails, _) {
+        return videoDetails.isEmpty
+            ? const EmptyMessage()
+            : GridView.builder(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -59,8 +61,7 @@ class _VideoScreenState extends State<VideoScreen> {
                 },
                 itemCount: videoDetails.length,
               );
-            },
-          )
-        : const EmptyMessage();
+      },
+    );
   }
 }

@@ -1,6 +1,4 @@
 import 'dart:developer';
-import 'dart:io';
-
 import 'package:fetch_all_videos/fetch_all_videos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -21,6 +19,7 @@ class VideoDatabaseFunction {
     final box = Hive.box<VideoModel>('video_details');
     videoListNotifier.value.clear();
     videoListNotifier.value.addAll(box.values);
+    log(videoListNotifier.value.length.toString());
 
     // ---- recently played database ---- //
 
@@ -76,7 +75,6 @@ class VideoDatabaseFunction {
 
 // ---- thumbnail ----//
         try {
-          File tempUrl = File(fileDir);
           final uint8list = await VideoThumbnail.thumbnailData(
             video: fileDir,
             imageFormat: ImageFormat.JPEG,
@@ -85,9 +83,8 @@ class VideoDatabaseFunction {
           );
         } catch (e) {
           log(e.toString());
-        }   
+        }
 
-// - - - - - - - - - - //
         log('adding video');
         var val = await box.add(VideoModel(
             videoUrl: fileDir,
@@ -120,6 +117,7 @@ class VideoDatabaseFunction {
 
     log(box.values.length.toString());
     videoListNotifier.value.addAll(box.values);
+    videoListNotifier.notifyListeners();
     videoListNotifier.value.sort(
       (a, b) {
         return a.videoName.compareTo(b.videoName);
@@ -147,6 +145,7 @@ class VideoDatabaseFunction {
     videoListNotifier.value.addAll(box.values);
     log(videoListNotifier.value.length.toString());
     videoListNotifier.notifyListeners();
+    changeFavList();
   }
 
   void changeFavList() {
@@ -157,16 +156,17 @@ class VideoDatabaseFunction {
       log('favlist loop');
       if (item.videoFavourite == true) {
         favList.value.add(item);
+
         log('video added to favList');
       } else {
         if (favList.value.contains(item)) {
           favList.value.remove(item);
+
           log('video removed from favList');
         }
       }
+      favList.notifyListeners();
     }
-
-    favList.notifyListeners();
   }
 
   static void addToRecently(String videoUrl) {
@@ -177,6 +177,9 @@ class VideoDatabaseFunction {
       String tempLink = element.videoUrl;
       if (tempLink.endsWith('/')) {
         tempLink = tempLink.substring(0, tempLink.length - 1);
+      }
+      if (videoUrl.endsWith('/')) {
+        videoUrl = videoUrl.substring(0, videoUrl.length - 1);
       }
       if (videoUrl == tempLink) {
         log('add to recent if');

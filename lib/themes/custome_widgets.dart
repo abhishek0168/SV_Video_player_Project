@@ -120,19 +120,22 @@ class VideoPreview extends StatelessWidget {
                             ),
                     ),
                   ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: IconButton(
-                        onPressed: moreBottonFunction,
-                        icon: const Icon(
-                          Icons.more_vert,
-                          color: AppColor.whiteColor,
-                          shadows: <Shadow>[
-                            Shadow(color: Colors.black, blurRadius: 15.0)
-                          ],
-                          size: 20,
-                        )),
+                  Visibility(
+                    visible: moreBottonFunction == null ? false : true,
+                    child: Positioned(
+                      top: 0,
+                      right: 0,
+                      child: IconButton(
+                          onPressed: moreBottonFunction,
+                          icon: const Icon(
+                            Icons.more_vert,
+                            color: AppColor.whiteColor,
+                            shadows: <Shadow>[
+                              Shadow(color: Colors.black, blurRadius: 15.0)
+                            ],
+                            size: 20,
+                          )),
+                    ),
                   )
                 ],
               )),
@@ -224,43 +227,54 @@ class PlaylistPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(5),
       child: Container(
+        // height: 50,
+        padding: EdgeInsets.zero,
         color: AppColor.secondBgColor,
-        child: Column(children: [
-          Container(
-            color: AppColor.secondaryColor,
-            padding: const EdgeInsets.all(10),
-            width: 150,
-            height: 100,
-            child: const Icon(
-              CustomeAppIcon.video_1,
-              size: 70,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              color: AppColor.secondaryColor,
+              padding: const EdgeInsets.all(10),
+              width: 165,
+              height: 100,
+              child: const Icon(
+                CustomeAppIcon.video_1,
+                // Icons.playlist_add,
+
+                size: 70,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: VideoName(
-                      input: playlistData.playlistName,
-                      textAlign: TextAlign.left,
-                      width: 150),
-                ),
-                InkWell(
-                  onTap: moreFunction,
-                  child: const Icon(
-                    Icons.more_vert,
-                    color: AppColor.whiteColor,
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 10),
+              child: Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: VideoName(
+                        input: playlistData.playlistName,
+                        textAlign: TextAlign.left,
+                        width: 150),
                   ),
-                )
-              ],
+                  InkWell(
+                    onTap: moreFunction,
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Icon(
+                        Icons.more_vert,
+                        color: AppColor.whiteColor,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
