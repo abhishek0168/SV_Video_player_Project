@@ -155,7 +155,7 @@ class PlaylistFunction {
 
   void removePlaylist({required PlaylistModel itemData}) async {
     final box = Hive.box<PlaylistModel>('playlist');
-    // playlistValue.value.clear();
+    playlistValue.value.clear();
     log(itemData.id.toString());
     box.delete(itemData.id);
 

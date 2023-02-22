@@ -72,7 +72,7 @@ class VideoPreview extends StatelessWidget {
       this.fileDuration,
       this.moreBottonFunction});
   final String fileName;
-  final String? thumbnailURL;
+  final dynamic thumbnailURL;
   final String? fileDuration;
   final Function()? moreBottonFunction;
 
@@ -93,10 +93,7 @@ class VideoPreview extends StatelessWidget {
                 children: [
                   Container(
                     child: thumbnailURL != null
-                        ? Image.file(
-                            File(thumbnailURL.toString()),
-                            fit: BoxFit.cover,
-                          )
+                        ? thumbnailURL
                         : const Center(
                             child: Icon(
                             CustomeAppIcon.video_1,

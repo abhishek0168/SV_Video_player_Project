@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:developer';
 
+import 'package:better_player/better_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
@@ -12,14 +13,14 @@ class Video extends StatefulWidget {
   final VideoPlayerController videoPlayerController;
   final bool loop;
   final bool autoplay;
-  final double aspectRatio;
+  final double? aspectRatio;
 
   const Video({
     super.key,
     required this.videoPlayerController,
     required this.loop,
     required this.autoplay,
-    required this.aspectRatio,
+    this.aspectRatio,
   });
 
   @override
@@ -33,11 +34,12 @@ class _VideoState extends State<Video> {
   void initState() {
     super.initState();
     _chewieController = ChewieController(
+      autoInitialize: true,
+      fullScreenByDefault: true,
       videoPlayerController: widget.videoPlayerController,
       looping: widget.loop,
       autoPlay: widget.autoplay,
-      aspectRatio: widget.aspectRatio,
-      // customControls: CustomControls(chewieController: _chewieController),
+      // aspectRatio: widget.aspectRatio,
     );
     setState(() {});
   }
@@ -84,49 +86,19 @@ class _VideoplayerState extends State<Videoplayer> {
   Widget build(BuildContext context) {
     log(widget.videoUrl);
     return Scaffold(
-      body: Stack(
-        children: [
-          Transform.scale(
-            scale: VideoPlayerController.file(File(widget.videoUrl))
-                .value
-                .aspectRatio,
-            child: Video(
-              videoPlayerController:
-                  VideoPlayerController.file(File(widget.videoUrl)),
-              loop: false,
-              autoplay: true,
-              aspectRatio: VideoPlayerController.file(File(widget.videoUrl))
-                  .value
-                  .aspectRatio,
-            ),
+      body: SafeArea(
+        maintainBottomViewPadding: true,
+        child: Center(
+          child: Video(
+            videoPlayerController:
+                VideoPlayerController.file(File(widget.videoUrl)),
+            loop: true,
+            autoplay: true,
+            // aspectRatio: VideoPlayerController.file(File(widget.videoUrl))
+            //     .value
+            //     .aspectRatio,
           ),
-          // Center(
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       InkWell(
-          //         onTap: () {},
-          //         child: const Icon(
-          //           Icons.skip_previous,
-          //           size: 40,
-          //           color: AppColor.whiteColor,
-          //         ),
-          //       ),
-          //       const SizedBox(
-          //         width: 50,
-          //       ),
-          //       InkWell(
-          //         onTap: () {},
-          //         child: const Icon(
-          //           Icons.skip_next,
-          //           size: 40,
-          //           color: AppColor.whiteColor,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // )
-        ],
+        ),
       ),
     );
   }

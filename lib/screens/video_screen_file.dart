@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
 import 'package:sv_video_app/screens/video_playing_screen.dart';
@@ -17,7 +19,20 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   void initState() {
     super.initState();
-    // VideoDatabaseFunction().getAllVideos();
+    for (var element in videoListNotifier.value) {
+      File videoUrl = File(element.videoUrl);
+      controller = VideoPlayerController.file(videoUrl)
+        ..initialize().then((_) {
+          setState(() {});
+        });
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller!.dispose();
   }
 
   @override
@@ -49,6 +64,7 @@ class _VideoScreenState extends State<VideoScreen> {
                       ));
                     },
                     child: VideoPreview(
+                      thumbnailURL: VideoPlayer(controller!),
                       fileName: videoDetails[index].videoName,
                       fileDuration: videoDetails[index].videoDuration,
                       // thumbnailURL: videoDetails[index].videoUrl,
