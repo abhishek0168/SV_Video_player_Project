@@ -1,10 +1,12 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:fetch_all_videos/fetch_all_videos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
+import 'package:video_player/video_player.dart';
 
 import 'package:video_thumbnail/video_thumbnail.dart';
 
@@ -74,34 +76,33 @@ class VideoDatabaseFunction {
             videoDur.toString().split('.').first.padLeft(8, "0");
 
 // ---- thumbnail ----//
-        try {
-          final uint8list = await VideoThumbnail.thumbnailData(
-            video: fileDir,
-            imageFormat: ImageFormat.JPEG,
-            maxWidth: 128,
-            quality: 25,
-          );
-        } catch (e) {
-          log(e.toString());
-        }
+        VideoPlayerController? videoController;
+        File videoUrl = File(fileDir);
+        videoController = VideoPlayerController.file(videoUrl);
+        videoController.initialize();
 
         log('adding video');
-        var val = await box.add(VideoModel(
+        var val = await box.add(
+          VideoModel(
             videoUrl: fileDir,
             videoName: fileName,
             videoDuration: formattedDuration,
-            videoFavourite: false));
+            videoFavourite: false,
+          ),
+        );
 
         var data = box.get(val);
 
         await box.put(
-            val,
-            VideoModel(
-                videoUrl: data!.videoUrl,
-                videoName: data.videoName,
-                videoDuration: data.videoDuration,
-                id: val,
-                videoFavourite: data.videoFavourite));
+          val,
+          VideoModel(
+            videoUrl: data!.videoUrl,
+            videoName: data.videoName,
+            videoDuration: data.videoDuration,
+            id: val,
+            videoFavourite: data.videoFavourite,
+          ),
+        );
       }
       flag = false;
     }

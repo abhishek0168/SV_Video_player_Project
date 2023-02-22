@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,8 @@ import 'package:sv_video_app/themes/custome_widgets.dart';
 import 'package:sv_video_app/widgets/custome_functions.dart';
 import 'package:video_player/video_player.dart';
 
+List<VideoPlayerController> videoControllers = [];
+
 class VideoScreen extends StatefulWidget {
   const VideoScreen({super.key});
   @override
@@ -14,17 +17,15 @@ class VideoScreen extends StatefulWidget {
 }
 
 class _VideoScreenState extends State<VideoScreen> {
-  VideoPlayerController? controller;
-
   @override
   void initState() {
     super.initState();
     for (var element in videoListNotifier.value) {
       File videoUrl = File(element.videoUrl);
-      controller = VideoPlayerController.file(videoUrl)
+      videoControllers.add(VideoPlayerController.file(videoUrl)
         ..initialize().then((_) {
           setState(() {});
-        });
+        }));
     }
   }
 
@@ -32,7 +33,7 @@ class _VideoScreenState extends State<VideoScreen> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    controller!.dispose();
+    // controller!.dispose();
   }
 
   @override
@@ -64,7 +65,7 @@ class _VideoScreenState extends State<VideoScreen> {
                       ));
                     },
                     child: VideoPreview(
-                      thumbnailURL: VideoPlayer(controller!),
+                      thumbnailURL: VideoPlayer(videoControllers[index]),
                       fileName: videoDetails[index].videoName,
                       fileDuration: videoDetails[index].videoDuration,
                       // thumbnailURL: videoDetails[index].videoUrl,
