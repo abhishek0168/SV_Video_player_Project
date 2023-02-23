@@ -1,13 +1,12 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:fetch_all_videos/fetch_all_videos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:thumbnailer/thumbnailer.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
-import 'package:video_player/video_player.dart';
-
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 ValueNotifier<List<VideoModel>> videoListNotifier = ValueNotifier([]);
@@ -76,10 +75,6 @@ class VideoDatabaseFunction {
             videoDur.toString().split('.').first.padLeft(8, "0");
 
 // ---- thumbnail ----//
-        VideoPlayerController? videoController;
-        File videoUrl = File(fileDir);
-        videoController = VideoPlayerController.file(videoUrl);
-        videoController.initialize();
 
         log('adding video');
         var val = await box.add(
@@ -103,6 +98,8 @@ class VideoDatabaseFunction {
             videoFavourite: data.videoFavourite,
           ),
         );
+
+        generateThumbnail(data.videoUrl);
       }
       flag = false;
     }
@@ -123,6 +120,20 @@ class VideoDatabaseFunction {
       (a, b) {
         return a.videoName.compareTo(b.videoName);
       },
+    );
+  }
+
+  Future<void> generateThumbnail(String videoUrl) async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+    ].request();
+
+    final uint8list = await VideoThumbnail.thumbnailData(
+      video: videoUrl,
+      imageFormat: ImageFormat.JPEG,
+      maxWidth:
+          128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+      quality: 25,
     );
   }
 

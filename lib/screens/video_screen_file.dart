@@ -30,13 +30,6 @@ class _VideoScreenState extends State<VideoScreen> {
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    // controller!.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: videoListNotifier,
@@ -65,7 +58,6 @@ class _VideoScreenState extends State<VideoScreen> {
                       ));
                     },
                     child: VideoPreview(
-                      thumbnailURL: VideoPlayer(videoControllers[index]),
                       fileName: videoDetails[index].videoName,
                       fileDuration: videoDetails[index].videoDuration,
                       // thumbnailURL: videoDetails[index].videoUrl,

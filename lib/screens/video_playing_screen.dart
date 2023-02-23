@@ -34,8 +34,9 @@ class _VideoState extends State<Video> {
   void initState() {
     super.initState();
     _chewieController = ChewieController(
-      autoInitialize: true,
+      // autoInitialize: true,
       fullScreenByDefault: true,
+      
       videoPlayerController: widget.videoPlayerController,
       looping: widget.loop,
       autoPlay: widget.autoplay,
@@ -86,6 +87,7 @@ class _VideoplayerState extends State<Videoplayer> {
   Widget build(BuildContext context) {
     log(widget.videoUrl);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         maintainBottomViewPadding: true,
         child: Center(
