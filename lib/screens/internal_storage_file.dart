@@ -65,8 +65,6 @@ class _InternalStorageFileState extends State<InternalStorageFile> {
                 onTap: () {
                   if (FileManager.isDirectory(entities[index])) {
                     controller.openDirectory(entities[index]);
-                    // Navigator.push( context, MaterialPageRoute( builder: (context) {}));
-                    // open directory
                   } else {
                     log(entities[index].toString());
                     String item = entities[index]
@@ -83,6 +81,8 @@ class _InternalStorageFileState extends State<InternalStorageFile> {
                           return Videoplayer(videoUrl: item, index: index);
                         },
                       ));
+                    } else {
+                      entities[index].absolute;
                     }
                   }
                 },

@@ -25,11 +25,14 @@ class PlaylistFunction {
     playlistValue.value.clear();
     List<VideoModel> tempList = [];
     log('Adding to the playlist...');
-    tempList.add(VideoModel(
+    tempList.add(
+      VideoModel(
         videoUrl: itemData.videoUrl,
         videoName: itemData.videoName,
         videoDuration: itemData.videoDuration,
-        videoFavourite: itemData.videoFavourite));
+        videoFavourite: itemData.videoFavourite,
+      ),
+    );
 
     final listId = await box.add(
       PlaylistModel(
@@ -43,9 +46,10 @@ class PlaylistFunction {
     await box.put(
       listId,
       PlaylistModel(
-          playlistItem: data!.playlistItem,
-          playlistName: data.playlistName,
-          id: listId),
+        playlistItem: data!.playlistItem,
+        playlistName: data.playlistName,
+        id: listId,
+      ),
     );
 
     playlistValue.value.addAll(box.values);

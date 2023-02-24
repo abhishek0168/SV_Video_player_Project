@@ -6,6 +6,7 @@ import 'package:sv_video_app/db/model/data_model.dart';
 import 'package:sv_video_app/db/model/playlist_model.dart';
 
 import 'package:sv_video_app/screens/main_page.dart';
+import 'package:sv_video_app/screens/splash_screen.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
 
 void main() async {
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Inter',
         scaffoldBackgroundColor: AppColor.bgColor,
       ),
-      home: const MainPage(),
+      home: const MySplashScreen(),
     );
   }
 }

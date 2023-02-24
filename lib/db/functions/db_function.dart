@@ -1,11 +1,11 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:fetch_all_videos/fetch_all_videos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:thumbnailer/thumbnailer.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
@@ -28,7 +28,7 @@ class VideoDatabaseFunction {
     recentPlay.value.clear();
     log('recent clearing');
     recentPlay.value.addAll(recent.values);
-    await fetchAllVideos();
+    fetchAllVideos();
 
     changeFavList();
   }
@@ -74,7 +74,7 @@ class VideoDatabaseFunction {
         String formattedDuration =
             videoDur.toString().split('.').first.padLeft(8, "0");
 
-// ---- thumbnail ----//
+        // ---- thumbnail ---- //
 
         log('adding video');
         var val = await box.add(
@@ -98,8 +98,6 @@ class VideoDatabaseFunction {
             videoFavourite: data.videoFavourite,
           ),
         );
-
-        generateThumbnail(data.videoUrl);
       }
       flag = false;
     }
@@ -123,18 +121,12 @@ class VideoDatabaseFunction {
     );
   }
 
-  Future<void> generateThumbnail(String videoUrl) async {
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.storage,
-    ].request();
-
-    final uint8list = await VideoThumbnail.thumbnailData(
-      video: videoUrl,
-      imageFormat: ImageFormat.JPEG,
-      maxWidth:
-          128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-      quality: 25,
-    );
+  static Future<String> getthumbnail(path) async {
+    String thumbnailFile = '';
+    return thumbnailFile = (await VideoThumbnail.thumbnailFile(
+        video: path,
+        thumbnailPath: (await getTemporaryDirectory()).path,
+        imageFormat: ImageFormat.PNG))!;
   }
 
   // ---- Changing Favourite List ---- //

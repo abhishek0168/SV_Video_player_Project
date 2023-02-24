@@ -24,17 +24,20 @@ class StorageList extends StatelessWidget {
           return ListView.builder(
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              final bahu = storageList[index];
+              // final bahu = storageList[index];
               return InkWell(
                 onTap: () {
-                  controller.openDirectory(storageList[index]);
+                  if (FileManager.isDirectory(storageList[index])) {
+                    controller.openDirectory(storageList[index]);
+                  }
                   // Navigator.pop(context);
                   log(storageList.toString());
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) {
-                      return const InternalStorageFile();
-                    },
-                  ));
+                  // Navigator.push(context, MaterialPageRoute(
+                  //   builder: (context) {
+                  //     return const InternalStorageFile();
+                  //   },
+                  // ),
+                  // );
                 },
                 child: Column(
                   children: [
@@ -51,8 +54,12 @@ class StorageList extends StatelessWidget {
             itemCount: storageList.length,
           );
         }
-        return const CircularProgressIndicator(
-          backgroundColor: AppColor.secondBgColor,
+        return const SizedBox(
+          width: 50,
+          height: 50,
+          child: CircularProgressIndicator(
+            backgroundColor: AppColor.secondBgColor,
+          ),
         );
       },
     );

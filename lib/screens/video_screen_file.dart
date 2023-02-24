@@ -60,7 +60,7 @@ class _VideoScreenState extends State<VideoScreen> {
                     child: VideoPreview(
                       fileName: videoDetails[index].videoName,
                       fileDuration: videoDetails[index].videoDuration,
-                      // thumbnailURL: videoDetails[index].videoUrl,
+                      thumbnailURL: videoDetails[index].videoUrl,
                       moreBottonFunction: () {
                         CustomeFunctions.moreFunction(
                             videoDetails[index], context);

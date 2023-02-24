@@ -92,13 +92,16 @@ class VideoPreview extends StatelessWidget {
                 fit: StackFit.expand,
                 children: [
                   Container(
-                    child: thumbnailURL ??
-                        const Center(
+                    child: thumbnailURL == null
+                        ? const Center(
                             child: Icon(
-                          CustomeAppIcon.video_1,
-                          size: 40,
-                          color: AppColor.secondaryColor,
-                        )),
+                            CustomeAppIcon.video_1,
+                            size: 40,
+                            color: AppColor.secondaryColor,
+                          ))
+                        : Image.file(
+                            File(thumbnailURL),
+                          ),
                   ),
                   Positioned(
                     bottom: 0,
