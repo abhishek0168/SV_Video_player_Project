@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:sv_video_app/screens/home_screen_file.dart';
 import 'package:sv_video_app/screens/playlist_screen_file.dart';
@@ -5,6 +7,9 @@ import 'package:sv_video_app/screens/video_screen_file.dart';
 import 'package:sv_video_app/text/texts.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
 import 'package:sv_video_app/themes/custome_widgets.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
+
+import '../db/functions/db_function.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -37,8 +42,17 @@ class _MainPageState extends State<MainPage> {
     Navigator.pop(context);
   }
 
+ 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(

@@ -81,9 +81,7 @@ class _InternalStorageFileState extends State<InternalStorageFile> {
                           return Videoplayer(videoUrl: item, index: index);
                         },
                       ));
-                    } else {
-                      entities[index].absolute;
-                    }
+                    } else {}
                   }
                 },
               );

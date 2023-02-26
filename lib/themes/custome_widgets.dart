@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -296,14 +297,72 @@ Widget customIconMenu(IconData selectIcon) {
 }
 
 class CustomSearch extends SearchDelegate {
+  ValueNotifier<bool> sortBy = ValueNotifier(false);
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    return ThemeData(
+        scaffoldBackgroundColor: AppColor.bgColor,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: AppColor.bgColor,
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          hintStyle: TextStyle(color: AppColor.textColor),
+          filled: true,
+          fillColor: AppColor.bgColor,
+        ));
+  }
+
+  @override
+  TextStyle? get searchFieldStyle => const TextStyle(color: AppColor.textColor);
+
   @override
   List<Widget>? buildActions(BuildContext context) {
+    String sortName = 'name';
+    String sortTime = 'time';
+
     return [
+      // DropdownButton(
+      //   items: dropItems.map((item) {
+      //     return DropdownMenuItem(child: Text(item));
+      //   }).toList(),
+      //   onChanged: (value) {},
+      // ),
       IconButton(
         onPressed: () {
           query = '';
         },
         icon: const Icon(Icons.clear),
+      ),
+      PopupMenuButton(
+        icon: const Icon(
+          Icons.more_vert,
+          color: AppColor.whiteColor,
+        ),
+        color: AppColor.secondBgColor,
+        itemBuilder: (context) => [
+          PopupMenuItem(
+            value: sortName,
+            child: const Text(
+              'Sort by name',
+              style: CustomeTextStyle.defultText,
+            ),
+          ),
+          PopupMenuItem(
+            value: sortTime,
+            child: const Text(
+              'Sort by time',
+              style: CustomeTextStyle.defultText,
+            ),
+          ),
+        ],
+        onSelected: (value) {
+          if (value == sortName) {
+            sortBy.value = true;
+          } else if (value == sortTime) {
+            sortBy.value = false;
+          }
+          sortBy.notifyListeners();
+        },
       ),
     ];
   }
@@ -319,45 +378,58 @@ class CustomSearch extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<VideoModel> matchQuery = [];
+    ValueNotifier<List<VideoModel>> matchQuery = ValueNotifier([]);
     for (var item in videoListNotifier.value) {
       if (item.videoName.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(item);
+        matchQuery.value.add(item);
       }
     }
+    sortBy.value
+        ? matchQuery.value.sort((a, b) =>
+            a.videoName.toLowerCase().compareTo(b.videoName.toLowerCase()))
+        : matchQuery.value
+            .sort((a, b) => b.videoDuration.compareTo(a.videoDuration));
+    sortBy.notifyListeners();
+    log(sortBy.toString() + 'Suggestions');
 
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        var result = matchQuery[index];
-        return matchQuery.isNotEmpty
-            ? InkWell(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) {
-                      return Videoplayer(
-                        videoUrl: result.videoUrl,
-                        index: index,
-                        dbData: result,
-                      );
+    return ValueListenableBuilder(
+      valueListenable: matchQuery,
+      builder: (context, values, _) {
+        return values.isNotEmpty
+            ? ListView.builder(
+                itemCount: matchQuery.value.length,
+                itemBuilder: (context, index) {
+                  var result = matchQuery.value[index];
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Videoplayer(
+                            videoUrl: result.videoUrl,
+                            index: index,
+                            dbData: result,
+                          );
+                        },
+                      ));
                     },
-                  ));
+                    child: ListTile(
+                      tileColor: AppColor.bgColor,
+                      leading: const Icon(
+                        CustomeAppIcon.video,
+                        color: AppColor.primaryColor,
+                        size: CustomeSizes.iconSmall,
+                      ),
+                      title: VideoName(
+                          input: result.videoName,
+                          textAlign: TextAlign.left,
+                          width: 200),
+                      subtitle: Text(
+                        result.videoDuration,
+                        style: const TextStyle(color: AppColor.secondaryColor),
+                      ),
+                    ),
+                  );
                 },
-                child: ListTile(
-                  leading: const Icon(
-                    CustomeAppIcon.video,
-                    color: AppColor.primaryColor,
-                    size: CustomeSizes.iconSmall,
-                  ),
-                  title: VideoName(
-                      input: result.videoName,
-                      textAlign: TextAlign.left,
-                      width: 200),
-                  subtitle: Text(
-                    result.videoDuration,
-                    style: const TextStyle(color: AppColor.secondaryColor),
-                  ),
-                ),
               )
             : const EmptyMessage();
       },
@@ -366,41 +438,60 @@ class CustomSearch extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    List<VideoModel> matchQuery = [];
+    log('result page');
+    ValueNotifier<List<VideoModel>> matchQuery = ValueNotifier([]);
     for (var item in videoListNotifier.value) {
       if (item.videoName.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(item);
+        matchQuery.value.add(item);
       }
+      log('result loop');
     }
+    sortBy.value
+        ? matchQuery.value.sort((a, b) =>
+            a.videoName.toLowerCase().compareTo(b.videoName.toLowerCase()))
+        : matchQuery.value
+            .sort((a, b) => b.videoDuration.compareTo(a.videoDuration));
+    sortBy.notifyListeners();
+    log(sortBy.toString() + 'result');
 
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        var result = matchQuery[index];
-        return matchQuery.isNotEmpty
-            ? InkWell(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) {
-                      return Videoplayer(
-                        videoUrl: result.videoUrl,
-                        index: index,
-                        dbData: result,
-                      );
+    return ValueListenableBuilder(
+      valueListenable: matchQuery,
+      builder: (context, values, _) {
+        return values.isNotEmpty
+            ? ListView.builder(
+                itemCount: matchQuery.value.length,
+                itemBuilder: (context, index) {
+                  var result = matchQuery.value[index];
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return Videoplayer(
+                            videoUrl: result.videoUrl,
+                            index: index,
+                            dbData: result,
+                          );
+                        },
+                      ));
                     },
-                  ));
+                    child: ListTile(
+                      tileColor: AppColor.bgColor,
+                      leading: const Icon(
+                        CustomeAppIcon.video,
+                        color: AppColor.primaryColor,
+                        size: CustomeSizes.iconSmall,
+                      ),
+                      title: VideoName(
+                          input: result.videoName,
+                          textAlign: TextAlign.left,
+                          width: 200),
+                      subtitle: Text(
+                        result.videoDuration,
+                        style: const TextStyle(color: AppColor.secondaryColor),
+                      ),
+                    ),
+                  );
                 },
-                child: ListTile(
-                  leading: const Icon(
-                    CustomeAppIcon.video,
-                    color: AppColor.primaryColor,
-                    size: CustomeSizes.iconSmall,
-                  ),
-                  title: VideoName(
-                      input: result.videoName,
-                      textAlign: TextAlign.left,
-                      width: 200),
-                ),
               )
             : const EmptyMessage();
       },

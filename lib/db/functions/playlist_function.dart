@@ -72,7 +72,7 @@ class PlaylistFunction {
       if (dbItem.playlistName == playlistName) {
         flag = true;
         dbitem = dbItem;
-        log('list name ${dbitem.playlistName} and and ${dbitem.id}'); // second time id become null
+        log('list name ${dbitem.playlistName} and and ${dbitem.id}');
         break;
       }
     }
@@ -92,8 +92,6 @@ class PlaylistFunction {
           break;
         }
       }
-
-      // dbitem.playlistItem.clear();
 
       if (!status) {
         dbitem.playlistItem.clear();

@@ -25,10 +25,6 @@ void main() async {
   await Hive.openBox<VideoModel>('video_recently');
   await Hive.openBox<PlaylistModel>('playlist');
 
-  VideoDatabaseFunction().getAllVideos();
-  PlaylistFunction().getAllPlaylist();
-  VideoDatabaseFunction().changeFavList();
-
   runApp(const MyApp());
 }
 

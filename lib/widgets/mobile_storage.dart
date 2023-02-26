@@ -21,37 +21,42 @@ class StorageList extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final List<FileSystemEntity> storageList = snapshot.data!;
-          return ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              // final bahu = storageList[index];
-              return InkWell(
-                onTap: () {
-                  if (FileManager.isDirectory(storageList[index])) {
-                    controller.openDirectory(storageList[index]);
-                  }
-                  // Navigator.pop(context);
-                  log(storageList.toString());
-                  // Navigator.push(context, MaterialPageRoute(
-                  //   builder: (context) {
-                  //     return const InternalStorageFile();
-                  //   },
-                  // ),
-                  // );
-                },
-                child: Column(
-                  children: [
-                    const FolderIcon(iconSize: CustomeSizes.folderLarge),
-                    VideoName(
-                      input: folderName[index],
-                      textAlign: TextAlign.center,
-                      width: CustomeSizes.folderLarge,
+          return FileManager(
+            emptyFolder: const EmptyMessage(),
+            controller: controller,
+            builder: (context, snapshot) {
+              final List<FileSystemEntity> entities = snapshot;
+              return ListView.builder(
+                itemCount: storageList.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  // final bahu = storageList[index];
+                  return InkWell(
+                    onTap: () {
+                      controller.openDirectory(entities[index]);
+                      // Navigator.pop(context);
+                      log(storageList.toString());
+                      // Navigator.push(context, MaterialPageRoute(
+                      //   builder: (context) {
+                      //     return const InternalStorageFile();
+                      //   },
+                      // ),
+                      // );
+                    },
+                    child: Column(
+                      children: [
+                        const FolderIcon(iconSize: CustomeSizes.folderLarge),
+                        VideoName(
+                          input: folderName[index],
+                          textAlign: TextAlign.center,
+                          width: CustomeSizes.folderLarge,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               );
             },
-            itemCount: storageList.length,
           );
         }
         return const SizedBox(

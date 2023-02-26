@@ -121,12 +121,18 @@ class VideoDatabaseFunction {
     );
   }
 
-  static Future<String> getthumbnail(path) async {
-    String thumbnailFile = '';
-    return thumbnailFile = (await VideoThumbnail.thumbnailFile(
-        video: path,
-        thumbnailPath: (await getTemporaryDirectory()).path,
-        imageFormat: ImageFormat.PNG))!;
+  Future<String> getthumbnail(videoUrl) async {
+    try {
+      String thumbnailFile = '';
+      return thumbnailFile = (await VideoThumbnail.thumbnailFile(
+        video: videoUrl,
+        // thumbnailPath: (await getTemporaryDirectory()).path,
+        imageFormat: ImageFormat.PNG,
+      ))!;
+    } catch (e) {
+      log(e.toString());
+      return 'null';
+    }
   }
 
   // ---- Changing Favourite List ---- //

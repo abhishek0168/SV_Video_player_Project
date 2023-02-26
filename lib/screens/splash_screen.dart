@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
 import 'package:sv_video_app/screens/main_page.dart';
 
+import '../db/functions/playlist_function.dart';
+
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({super.key});
 
@@ -17,7 +19,12 @@ class _MyWidgetState extends State<MySplashScreen> {
   }
 
   void moveOn() async {
-    await Future.delayed(const Duration(seconds: 2), () {});
+    await Future.delayed(const Duration(seconds: 2), () {
+      VideoDatabaseFunction().getAllVideos();
+      PlaylistFunction().getAllPlaylist();
+      VideoDatabaseFunction().changeFavList();
+    });
+
     // ignore: use_build_context_synchronously
     Navigator.pushReplacement(
       context,
