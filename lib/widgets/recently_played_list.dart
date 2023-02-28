@@ -32,6 +32,7 @@ class RecentlyPlayed extends StatelessWidget {
                     child: VideoPreview(
                       fileName: videoDetails[index].videoName,
                       fileDuration: videoDetails[index].videoDuration,
+                      thumbnailURL: videoDetails[index].videoThumbnail,
                     ),
                   );
                 },

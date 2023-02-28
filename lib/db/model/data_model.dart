@@ -19,11 +19,15 @@ class VideoModel {
   @HiveField(4)
   bool videoFavourite = false;
 
+  @HiveField(5)
+  String? videoThumbnail;
+
   VideoModel({
     this.id,
     required this.videoUrl,
     required this.videoName,
     required this.videoDuration,
     required this.videoFavourite,
+    this.videoThumbnail,
   });
 }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:export_video_frame/export_video_frame.dart';
 import 'package:fetch_all_videos/fetch_all_videos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
 ValueNotifier<List<VideoModel>> videoListNotifier = ValueNotifier([]);
 ValueNotifier<List<VideoModel>> favList = ValueNotifier([]);
@@ -71,10 +71,15 @@ class VideoDatabaseFunction {
         final videoInfo = await FlutterVideoInfo().getVideoInfo(fileDir);
         double millisec = videoInfo!.duration!;
         Duration videoDur = Duration(milliseconds: millisec.toInt());
+
         String formattedDuration =
-            videoDur.toString().split('.').first.padLeft(8, "0");
+            videoDur.toString().split('.').first.padLeft(8, '0');
 
         // ---- thumbnail ---- //
+        var images = await ExportVideoFrame.exportImage(fileDir, 1, 1);
+        String tempThump = images[0].toString();
+        tempThump = tempThump.substring(7, tempThump.length - 1);
+        log(tempThump);
 
         log('adding video');
         var val = await box.add(
@@ -83,6 +88,7 @@ class VideoDatabaseFunction {
             videoName: fileName,
             videoDuration: formattedDuration,
             videoFavourite: false,
+            videoThumbnail: tempThump,
           ),
         );
 
@@ -96,6 +102,7 @@ class VideoDatabaseFunction {
             videoDuration: data.videoDuration,
             id: val,
             videoFavourite: data.videoFavourite,
+            videoThumbnail: data.videoThumbnail,
           ),
         );
       }
@@ -104,6 +111,7 @@ class VideoDatabaseFunction {
 
     log(box.values.length.toString());
     for (var item in box.values) {
+      // log(item.videoThumbnail!);
       log('finding duplicate');
       if (!videos.contains(item.videoUrl)) {
         box.delete(item.id!);
@@ -121,20 +129,6 @@ class VideoDatabaseFunction {
     );
   }
 
-  Future<String> getthumbnail(videoUrl) async {
-    try {
-      String thumbnailFile = '';
-      return thumbnailFile = (await VideoThumbnail.thumbnailFile(
-        video: videoUrl,
-        // thumbnailPath: (await getTemporaryDirectory()).path,
-        imageFormat: ImageFormat.PNG,
-      ))!;
-    } catch (e) {
-      log(e.toString());
-      return 'null';
-    }
-  }
-
   // ---- Changing Favourite List ---- //
 
   void changeFavorites(VideoModel videoData) async {
@@ -149,10 +143,16 @@ class VideoDatabaseFunction {
         videoName: videoData.videoName,
         videoDuration: videoData.videoDuration,
         videoFavourite: !videoData.videoFavourite,
+        videoThumbnail: videoData.videoThumbnail,
       ),
     );
 
     videoListNotifier.value.addAll(box.values);
+    videoListNotifier.value.sort(
+      (a, b) {
+        return a.videoName.compareTo(b.videoName);
+      },
+    );
     log(videoListNotifier.value.length.toString());
     videoListNotifier.notifyListeners();
     changeFavList();

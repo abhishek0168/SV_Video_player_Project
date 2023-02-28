@@ -18,12 +18,10 @@ class _HomeScreeenState extends State<HomeScreeen> {
   void initState() {
     super.initState();
     VideoDatabaseFunction().changeFavList();
-    
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return ListView(
       padding: const EdgeInsets.only(
         left: 25,

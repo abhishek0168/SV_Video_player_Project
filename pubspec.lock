@@ -209,6 +209,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.4"
+  export_video_frame:
+    dependency: "direct main"
+    description:
+      name: export_video_frame
+      sha256: e34f033f6aa460e7131c7c3f75b92832cecde2c969d88a944c54e88d74207f15
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.7"
   fake_async:
     dependency: transitive
     description:
@@ -440,6 +448,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.0"
+  media_info:
+    dependency: transitive
+    description:
+      name: media_info
+      sha256: "247ec2438a2135a72c6a2a9bd986083c5e0b01ae3b9abd1614444788d9064b1e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.0"
   meta:
     dependency: transitive
     description:
@@ -789,14 +805,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.14"
-  video_thumbnail:
-    dependency: "direct main"
-    description:
-      name: video_thumbnail
-      sha256: "3455c189d3f0bb4e3fc2236475aa84fe598b9b2d0e08f43b9761f5bc44210016"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.5.3"
   visibility_detector:
     dependency: transitive
     description:

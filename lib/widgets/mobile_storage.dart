@@ -27,21 +27,23 @@ class StorageList extends StatelessWidget {
             builder: (context, snapshot) {
               final List<FileSystemEntity> entities = snapshot;
               return ListView.builder(
-                itemCount: storageList.length,
+                itemCount: 1,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   // final bahu = storageList[index];
                   return InkWell(
                     onTap: () {
-                      controller.openDirectory(entities[index]);
+                      // controller.openDirectory(entities[index]);
                       // Navigator.pop(context);
                       log(storageList.toString());
-                      // Navigator.push(context, MaterialPageRoute(
-                      //   builder: (context) {
-                      //     return const InternalStorageFile();
-                      //   },
-                      // ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const InternalStorageFile();
+                          },
+                        ),
+                      );
                     },
                     child: Column(
                       children: [

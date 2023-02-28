@@ -39,14 +39,15 @@ class _FavoritesListState extends State<FavoritesList> {
                     ));
                   },
                   child: VideoPreview(
-                      fileName: favList[index].videoName,
-                      fileDuration: favList[index].videoDuration,
-                      moreBottonFunction: () {
-                        setState(() {
-                          CustomeFunctions.moreFunction(
-                              favList[index], context);
-                        });
-                      }),
+                    fileName: favList[index].videoName,
+                    fileDuration: favList[index].videoDuration,
+                    moreBottonFunction: () {
+                      setState(() {
+                        CustomeFunctions.moreFunction(favList[index], context);
+                      });
+                    },
+                    thumbnailURL: favList[index].videoThumbnail,
+                  ),
                 ),
                 separatorBuilder: (context, index) => const SizedBox(width: 20),
                 itemCount: favList.length,

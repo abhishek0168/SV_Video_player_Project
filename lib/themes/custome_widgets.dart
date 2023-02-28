@@ -73,7 +73,7 @@ class VideoPreview extends StatelessWidget {
       this.fileDuration,
       this.moreBottonFunction});
   final String fileName;
-  final dynamic thumbnailURL;
+  final String? thumbnailURL;
   final String? fileDuration;
   final Function()? moreBottonFunction;
 
@@ -96,12 +96,14 @@ class VideoPreview extends StatelessWidget {
                     child: thumbnailURL == null
                         ? const Center(
                             child: Icon(
-                            CustomeAppIcon.video_1,
-                            size: 40,
-                            color: AppColor.secondaryColor,
-                          ))
+                              CustomeAppIcon.video_1,
+                              size: 40,
+                              color: AppColor.secondaryColor,
+                            ),
+                          )
                         : Image.file(
-                            File(thumbnailURL),
+                            File(thumbnailURL!),
+                            fit: BoxFit.cover,
                           ),
                   ),
                   Positioned(
@@ -190,7 +192,10 @@ class CustomeTextStyle {
       fontWeight: FontWeight.bold);
 
   static const TextStyle fileDuration = TextStyle(
-      color: AppColor.textColor, fontSize: 12, fontWeight: FontWeight.bold);
+      color: AppColor.textColor,
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      shadows: [Shadow(color: AppColor.blackColor, blurRadius: 4)]);
 
   static const TextStyle defultText =
       TextStyle(color: AppColor.textColor, fontSize: 13);
@@ -210,7 +215,7 @@ class EmptyMessage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: const [
             Text(
-              'Is Empty',
+              'No video found !',
               style: CustomeTextStyle.fileDuration,
             )
           ]),
@@ -321,48 +326,45 @@ class CustomSearch extends SearchDelegate {
     String sortTime = 'time';
 
     return [
-      // DropdownButton(
-      //   items: dropItems.map((item) {
-      //     return DropdownMenuItem(child: Text(item));
-      //   }).toList(),
-      //   onChanged: (value) {},
-      // ),
       IconButton(
         onPressed: () {
           query = '';
         },
         icon: const Icon(Icons.clear),
       ),
-      PopupMenuButton(
-        icon: const Icon(
-          Icons.more_vert,
-          color: AppColor.whiteColor,
+      Visibility(
+        visible: query == '' ? false : true,
+        child: PopupMenuButton(
+          icon: const Icon(
+            Icons.more_vert,
+            color: AppColor.whiteColor,
+          ),
+          color: AppColor.secondBgColor,
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              value: sortName,
+              child: const Text(
+                'Sort by name',
+                style: CustomeTextStyle.defultText,
+              ),
+            ),
+            PopupMenuItem(
+              value: sortTime,
+              child: const Text(
+                'Sort by time',
+                style: CustomeTextStyle.defultText,
+              ),
+            ),
+          ],
+          onSelected: (value) {
+            if (value == sortName) {
+              sortBy.value = true;
+            } else if (value == sortTime) {
+              sortBy.value = false;
+            }
+            sortBy.notifyListeners();
+          },
         ),
-        color: AppColor.secondBgColor,
-        itemBuilder: (context) => [
-          PopupMenuItem(
-            value: sortName,
-            child: const Text(
-              'Sort by name',
-              style: CustomeTextStyle.defultText,
-            ),
-          ),
-          PopupMenuItem(
-            value: sortTime,
-            child: const Text(
-              'Sort by time',
-              style: CustomeTextStyle.defultText,
-            ),
-          ),
-        ],
-        onSelected: (value) {
-          if (value == sortName) {
-            sortBy.value = true;
-          } else if (value == sortTime) {
-            sortBy.value = false;
-          }
-          sortBy.notifyListeners();
-        },
       ),
     ];
   }
@@ -390,7 +392,6 @@ class CustomSearch extends SearchDelegate {
         : matchQuery.value
             .sort((a, b) => b.videoDuration.compareTo(a.videoDuration));
     sortBy.notifyListeners();
-    log(sortBy.toString() + 'Suggestions');
 
     return ValueListenableBuilder(
       valueListenable: matchQuery,
@@ -425,7 +426,7 @@ class CustomSearch extends SearchDelegate {
                           width: 200),
                       subtitle: Text(
                         result.videoDuration,
-                        style: const TextStyle(color: AppColor.secondaryColor),
+                        style: const TextStyle(color: AppColor.primaryColor),
                       ),
                     ),
                   );
@@ -451,13 +452,12 @@ class CustomSearch extends SearchDelegate {
             a.videoName.toLowerCase().compareTo(b.videoName.toLowerCase()))
         : matchQuery.value
             .sort((a, b) => b.videoDuration.compareTo(a.videoDuration));
-    sortBy.notifyListeners();
     log(sortBy.toString() + 'result');
 
     return ValueListenableBuilder(
       valueListenable: matchQuery,
       builder: (context, values, _) {
-        return values.isNotEmpty
+        return matchQuery.value.isNotEmpty
             ? ListView.builder(
                 itemCount: matchQuery.value.length,
                 itemBuilder: (context, index) {
@@ -487,7 +487,7 @@ class CustomSearch extends SearchDelegate {
                           width: 200),
                       subtitle: Text(
                         result.videoDuration,
-                        style: const TextStyle(color: AppColor.secondaryColor),
+                        style: const TextStyle(color: AppColor.primaryColor),
                       ),
                     ),
                   );

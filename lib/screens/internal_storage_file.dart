@@ -46,44 +46,49 @@ class _InternalStorageFileState extends State<InternalStorageFile> {
               height: 20,
             ),
             itemBuilder: (context, index) {
-              return ListTile(
-                horizontalTitleGap: 20,
-                leading: SizedBox(
-                  width: 80,
-                  child: FileManager.isFile(entities[index])
-                      ? const Icon(
-                          CustomeAppIcon.video,
-                          color: AppColor.primaryColor,
-                          size: CustomeSizes.iconSmall,
-                        )
-                      : const FolderIcon(iconSize: CustomeSizes.folderMideum),
-                ),
-                title: Text(
-                  FileManager.basename(entities[index]),
-                  style: CustomeTextStyle.fileNameWhite,
-                ),
-                onTap: () {
-                  if (FileManager.isDirectory(entities[index])) {
-                    controller.openDirectory(entities[index]);
-                  } else {
-                    log(entities[index].toString());
-                    String item = entities[index]
-                        .toString()
-                        .substring(7, entities[index].toString().length - 1);
-                    log(item);
-                    if (item.startsWith('/')) {
-                      item = item.substring(1, item.length);
+              String item = entities[index]
+                  .toString()
+                  .substring(7, entities[index].toString().length - 1);
+              log(item);
+              if (item.startsWith('/')) {
+                item = item.substring(1, item.length);
+              }
+              return Visibility(
+                visible: FileManager.isFile(entities[index])
+                    ? item.endsWith('mp4')
+                        ? true
+                        : false
+                    : true,
+                child: ListTile(
+                  horizontalTitleGap: 20,
+                  leading: SizedBox(
+                    width: 80,
+                    child: FileManager.isFile(entities[index])
+                        ? const Icon(
+                            CustomeAppIcon.video,
+                            color: AppColor.primaryColor,
+                            size: CustomeSizes.iconSmall,
+                          )
+                        : const FolderIcon(iconSize: CustomeSizes.folderMideum),
+                  ),  
+                  title: Text(
+                    FileManager.basename(entities[index]),
+                    style: CustomeTextStyle.fileNameWhite,
+                  ),
+                  onTap: () {
+                    if (FileManager.isDirectory(entities[index])) {
+                      controller.openDirectory(entities[index]);
+                    } else {
+                      if (item.endsWith('mp4')) {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) {
+                            return Videoplayer(videoUrl: item, index: index);
+                          },
+                        ));
+                      }
                     }
-                    log(item);
-                    if (item.endsWith('mp4')) {
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) {
-                          return Videoplayer(videoUrl: item, index: index);
-                        },
-                      ));
-                    } else {}
-                  }
-                },
+                  },
+                ),
               );
             },
           );
