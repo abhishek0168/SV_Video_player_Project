@@ -142,7 +142,7 @@ class CustomeFunctions {
                             style: const TextStyle(color: AppColor.textColor),
                           ),
                         ),
-                        const Spacer(),
+                        // const Spacer(),
                         Expanded(
                           flex: 3,
                           child: ElevatedButton(

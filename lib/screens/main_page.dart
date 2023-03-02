@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:sv_video_app/screens/home_screen_file.dart';
 import 'package:sv_video_app/screens/playlist_screen_file.dart';
@@ -7,8 +5,6 @@ import 'package:sv_video_app/screens/video_screen_file.dart';
 import 'package:sv_video_app/text/texts.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
 import 'package:sv_video_app/themes/custome_widgets.dart';
-
-import '../db/functions/db_function.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -35,16 +31,6 @@ class _MainPageState extends State<MainPage> {
 
   void _openEndDrawer() {
     _scaffoldKey.currentState!.openEndDrawer();
-  }
-
-  void _closeEndDrawer() {
-    Navigator.pop(context);
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
   }
 
   @override
@@ -177,7 +163,28 @@ class _DrawerViewState extends State<DrawerView> {
             style: CustomeTextStyle.fileNameWhite,
           ),
           onTap: () {
-            Navigator.pop(context);
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  backgroundColor: AppColor.secondBgColor,
+                  title: Image.asset(
+                    'assets/images/logo-full.png',
+                    scale: 1.5,
+                  ),
+                  content: AppText.aboutApp,
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: CustomeButtonStyle.bgTextStyle,
+                      child: const Text('Close'),
+                    )
+                  ],
+                );
+              },
+            );
           },
         ),
         const Padding(

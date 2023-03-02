@@ -215,7 +215,7 @@ class EmptyMessage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: const [
             Text(
-              'No video found !',
+              'No video found',
               style: CustomeTextStyle.fileDuration,
             )
           ]),

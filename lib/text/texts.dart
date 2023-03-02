@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sv_video_app/themes/app_colors.dart';
 import 'package:sv_video_app/themes/custome_widgets.dart';
 
 class AppText {
@@ -101,5 +100,10 @@ class AppText {
           text:
               '\nIf you have any questions or concerns about our Privacy Policy, please contact us at support@svplayer.com.\n'),
     ]),
+  );
+
+  static const aboutApp = Text(
+    'SV Player is video player created by Abhishek Thankachan',
+    style: CustomeTextStyle.defultText,
   );
 }

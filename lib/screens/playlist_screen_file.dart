@@ -35,7 +35,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 20,
                     mainAxisSpacing: 20,
-                    childAspectRatio: 1.1,
+                    // childAspectRatio: 1.1,
                   ),
                   itemBuilder: (context, index) {
                     return InkWell(
