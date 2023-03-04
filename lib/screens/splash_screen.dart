@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
 import 'package:sv_video_app/screens/main_page.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 import '../db/functions/playlist_function.dart';
 
 class MySplashScreen extends StatefulWidget {
@@ -14,8 +14,16 @@ class MySplashScreen extends StatefulWidget {
 class _MyWidgetState extends State<MySplashScreen> {
   @override
   void initState() {
-    super.initState();
+    // requestPermission();
     moveOn();
+    super.initState();
+  }
+
+  void requestPermission() async {
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
   }
 
   void moveOn() async {
