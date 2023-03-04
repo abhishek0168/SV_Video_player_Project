@@ -8,4 +8,5 @@ class AppColor {
   static const Color secondaryColor = Color.fromARGB(255, 50, 21, 77);
   static const Color whiteColor = Color.fromRGBO(255, 255, 255, 1);
   static const Color blackColor = Color.fromARGB(255, 0, 0, 0);
+  static const Color errorColor = Color.fromARGB(255, 210, 139, 31);
 }

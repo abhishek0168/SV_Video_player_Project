@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
@@ -201,6 +200,9 @@ class CustomeTextStyle {
 
   static const TextStyle headingText = TextStyle(
       color: AppColor.textColor, fontSize: 15, fontWeight: FontWeight.bold);
+
+  static const TextStyle errorStyle = TextStyle(
+      color: AppColor.errorColor, fontSize: 15, fontWeight: FontWeight.bold);
 }
 
 class EmptyMessage extends StatelessWidget {

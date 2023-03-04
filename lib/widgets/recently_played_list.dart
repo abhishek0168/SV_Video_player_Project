@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
-import 'package:sv_video_app/main.dart';
 import 'package:sv_video_app/screens/video_playing_screen.dart';
 import 'package:sv_video_app/themes/custome_widgets.dart';
 

@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:sv_video_app/db/functions/db_function.dart';
-import 'package:sv_video_app/db/functions/playlist_function.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
 import 'package:sv_video_app/db/model/playlist_model.dart';
 
-import 'package:sv_video_app/screens/main_page.dart';
 import 'package:sv_video_app/screens/splash_screen.dart';
 import 'package:sv_video_app/themes/app_colors.dart';
+import 'package:sv_video_app/themes/custome_widgets.dart';
 
 void main() async {
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    return Container(
+      alignment: Alignment.center,
+      child: Text(
+        'Error\n${details.exception}',
+        style: CustomeTextStyle.errorStyle,
+      ),
+    );
+  };
+
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
 

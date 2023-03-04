@@ -1,11 +1,9 @@
-import 'dart:io';
 import 'package:export_video_frame/export_video_frame.dart';
 import 'package:fetch_all_videos/fetch_all_videos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
 
 ValueNotifier<List<VideoModel>> videoListNotifier = ValueNotifier([]);

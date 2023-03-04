@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:better_player/better_player.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
@@ -35,7 +34,7 @@ class _VideoState extends State<Video> {
     _chewieController = ChewieController(
       // autoInitialize: true,
       fullScreenByDefault: true,
-      
+
       videoPlayerController: widget.videoPlayerController,
       looping: widget.loop,
       autoPlay: widget.autoplay,
