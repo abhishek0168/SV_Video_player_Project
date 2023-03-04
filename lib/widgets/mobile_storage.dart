@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:file_manager/file_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:sv_video_app/screens/internal_storage_file.dart';
-import 'package:sv_video_app/themes/app_colors.dart';
 import 'package:sv_video_app/themes/custome_widgets.dart';
 
 class StorageList extends StatelessWidget {
@@ -35,7 +34,6 @@ class StorageList extends StatelessWidget {
                     onTap: () {
                       // controller.openDirectory(entities[index]);
                       // Navigator.pop(context);
-                      log(storageList.toString());
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -64,9 +62,6 @@ class StorageList extends StatelessWidget {
         return const SizedBox(
           width: 50,
           height: 50,
-          child: CircularProgressIndicator(
-            backgroundColor: AppColor.secondBgColor,
-          ),
         );
       },
     );

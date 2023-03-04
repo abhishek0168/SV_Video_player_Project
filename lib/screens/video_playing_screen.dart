@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:developer';
 
 import 'package:better_player/better_player.dart';
 import 'package:chewie/chewie.dart';
@@ -85,7 +84,6 @@ class _VideoplayerState extends State<Videoplayer> {
 
   @override
   Widget build(BuildContext context) {
-    log(widget.videoUrl);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(

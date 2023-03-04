@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:export_video_frame/export_video_frame.dart';
 import 'package:fetch_all_videos/fetch_all_videos.dart';
@@ -20,13 +19,11 @@ class VideoDatabaseFunction {
     final box = Hive.box<VideoModel>('video_details');
     videoListNotifier.value.clear();
     videoListNotifier.value.addAll(box.values);
-    log(videoListNotifier.value.length.toString());
 
     // ---- recently played database ---- //
 
     final recent = Hive.box<VideoModel>('video_recently');
     recentPlay.value.clear();
-    log('recent clearing');
     recentPlay.value.addAll(recent.values);
     fetchAllVideos();
 
@@ -44,11 +41,9 @@ class VideoDatabaseFunction {
 
     var flag = false;
     for (var fileDir in videos) {
-      log('sorting video');
       for (var item in box.values) {
         if (fileDir == item.videoUrl) {
           flag = true;
-          log('same video');
           break;
         }
       }
@@ -79,9 +74,7 @@ class VideoDatabaseFunction {
         var images = await ExportVideoFrame.exportImage(fileDir, 1, 1);
         String tempThump = images[0].toString();
         tempThump = tempThump.substring(7, tempThump.length - 1);
-        log(tempThump);
 
-        log('adding video');
         var val = await box.add(
           VideoModel(
             videoUrl: fileDir,
@@ -109,17 +102,12 @@ class VideoDatabaseFunction {
       flag = false;
     }
 
-    log(box.values.length.toString());
     for (var item in box.values) {
-      // log(item.videoThumbnail!);
-      log('finding duplicate');
       if (!videos.contains(item.videoUrl)) {
         box.delete(item.id!);
-        log('duplicate removed');
       }
     }
 
-    log(box.values.length.toString());
     videoListNotifier.value.addAll(box.values);
     videoListNotifier.notifyListeners();
     videoListNotifier.value.sort(
@@ -153,26 +141,18 @@ class VideoDatabaseFunction {
         return a.videoName.compareTo(b.videoName);
       },
     );
-    log(videoListNotifier.value.length.toString());
     videoListNotifier.notifyListeners();
     changeFavList();
   }
 
   void changeFavList() {
     favList.value.clear();
-    log('change favlist calling ');
-    log(videoListNotifier.value.length.toString());
     for (var item in videoListNotifier.value) {
-      log('favlist loop');
       if (item.videoFavourite == true) {
         favList.value.add(item);
-
-        log('video added to favList');
       } else {
         if (favList.value.contains(item)) {
           favList.value.remove(item);
-
-          log('video removed from favList');
         }
       }
       favList.notifyListeners();
@@ -192,7 +172,6 @@ class VideoDatabaseFunction {
         videoUrl = videoUrl.substring(0, videoUrl.length - 1);
       }
       if (videoUrl == tempLink) {
-        log('add to recent if');
         tempItem = element;
         status = true;
         break;
@@ -200,14 +179,11 @@ class VideoDatabaseFunction {
     }
     if (status) {
       recentlyPlay(tempItem!);
-    } else {
-      log('add to recent not working');
     }
   }
 
   static void recentlyPlay(VideoModel videoData) async {
     recentPlay.value.clear();
-    log(recentPlay.value.toString());
     final box = Hive.box<VideoModel>('video_recently');
     final boxToList = box.values.toList();
 
@@ -220,10 +196,7 @@ class VideoDatabaseFunction {
 
     await box.addAll(boxToList);
 
-    log(box.values.toString());
-
     recentPlay.value.addAll(box.values);
-    log(recentPlay.value.toString());
     recentPlay.notifyListeners();
   }
 }

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:sv_video_app/db/functions/db_function.dart';
@@ -30,8 +29,6 @@ class CustomeFunctions {
                 onTap: () {
                   VideoDatabaseFunction().changeFavorites(item);
 
-                  log(item.videoFavourite.toString());
-                  log(item.toString());
 
                   Navigator.pop(context);
                 },
@@ -91,7 +88,6 @@ class CustomeFunctions {
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        log(MediaQuery.of(context).size.height.toString() + 'is the height');
         return Form(
           key: _formKey,
           child: Padding(

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -439,20 +438,17 @@ class CustomSearch extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    log('result page');
     ValueNotifier<List<VideoModel>> matchQuery = ValueNotifier([]);
     for (var item in videoListNotifier.value) {
       if (item.videoName.toLowerCase().contains(query.toLowerCase())) {
         matchQuery.value.add(item);
       }
-      log('result loop');
     }
     sortBy.value
         ? matchQuery.value.sort((a, b) =>
             a.videoName.toLowerCase().compareTo(b.videoName.toLowerCase()))
         : matchQuery.value
             .sort((a, b) => b.videoDuration.compareTo(a.videoDuration));
-    log(sortBy.toString() + 'result');
 
     return ValueListenableBuilder(
       valueListenable: matchQuery,

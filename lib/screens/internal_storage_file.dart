@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -49,7 +48,6 @@ class _InternalStorageFileState extends State<InternalStorageFile> {
               String item = entities[index]
                   .toString()
                   .substring(7, entities[index].toString().length - 1);
-              log(item);
               if (item.startsWith('/')) {
                 item = item.substring(1, item.length);
               }

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
@@ -12,9 +10,7 @@ class PlaylistFunction {
 
   void getAllPlaylist() {
     final box = Hive.box<PlaylistModel>('playlist');
-    log('clearing playlist');
     playlistValue.value.clear();
-    log('Adding playlist');
 
     playlistValue.value.addAll(box.values);
   }
@@ -24,7 +20,6 @@ class PlaylistFunction {
     final box = Hive.box<PlaylistModel>('playlist');
     playlistValue.value.clear();
     List<VideoModel> tempList = [];
-    log('Adding to the playlist...');
     tempList.add(
       VideoModel(
         videoUrl: itemData.videoUrl,
@@ -72,7 +67,6 @@ class PlaylistFunction {
       if (dbItem.playlistName == playlistName) {
         flag = true;
         dbitem = dbItem;
-        log('list name ${dbitem.playlistName} and and ${dbitem.id}');
         break;
       }
     }
@@ -107,7 +101,6 @@ class PlaylistFunction {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Video added to the playlist')),
         );
-        log(dbitem.id.runtimeType.toString()); // second time id become null
         await box.put(
           dbitem.id,
           PlaylistModel(
@@ -127,7 +120,6 @@ class PlaylistFunction {
   void removeFromPlaylist(
       {required PlaylistModel itemData, required String videoUrl}) async {
     final box = Hive.box<PlaylistModel>('playlist');
-    log('remove index $videoUrl');
     playlistValue.value.clear();
     List<VideoModel>? tempList;
 
@@ -158,7 +150,6 @@ class PlaylistFunction {
   void removePlaylist({required PlaylistModel itemData}) async {
     final box = Hive.box<PlaylistModel>('playlist');
     playlistValue.value.clear();
-    log(itemData.id.toString());
     box.delete(itemData.id);
 
     playlistValue.value.addAll(box.values);
@@ -169,8 +160,6 @@ class PlaylistFunction {
       {required PlaylistModel itemData, required String playlistRename}) {
     final box = Hive.box<PlaylistModel>('playlist');
     playlistValue.value.clear();
-    log(itemData.id.toString());
-    log(itemData.playlistName.toString());
     box.put(
       itemData.id,
       PlaylistModel(

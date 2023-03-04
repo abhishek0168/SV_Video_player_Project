@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:sv_video_app/db/functions/playlist_function.dart';
@@ -40,7 +39,6 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
-                        log('Navigator pushed');
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
                             return VideosInPlaylist(
