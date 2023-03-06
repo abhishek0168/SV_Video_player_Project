@@ -1,10 +1,11 @@
+import 'dart:developer';
 import 'package:export_video_frame/export_video_frame.dart';
-import 'package:fetch_all_videos/fetch_all_videos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:sv_video_app/db/model/data_model.dart';
+import 'package:sv_video_app/widgets/fetching_videos.dart';
 
 ValueNotifier<List<VideoModel>> videoListNotifier = ValueNotifier([]);
 ValueNotifier<List<VideoModel>> favList = ValueNotifier([]);
@@ -34,11 +35,12 @@ class VideoDatabaseFunction {
 
 // ---- Fetching all videos ---- //
 
-    FetchAllVideos ob = FetchAllVideos();
+    FetchingAllVideos ob = FetchingAllVideos();
     List videos = await ob.getAllVideos();
 
     var flag = false;
     for (var fileDir in videos) {
+      log(fileDir);
       for (var item in box.values) {
         if (fileDir == item.videoUrl) {
           flag = true;
@@ -67,11 +69,11 @@ class VideoDatabaseFunction {
 
         String formattedDuration =
             videoDur.toString().split('.').first.padLeft(8, '0');
-
         // ---- thumbnail ---- //
         var images = await ExportVideoFrame.exportImage(fileDir, 1, 1);
         String tempThump = images[0].toString();
         tempThump = tempThump.substring(7, tempThump.length - 1);
+        log(tempThump);
 
         var val = await box.add(
           VideoModel(
